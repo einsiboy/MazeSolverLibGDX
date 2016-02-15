@@ -12,18 +12,18 @@ public class Level {
 	Tile[][] tiles;
 	
 	public Level(){
-		tiles = new Tile[1][2];
+		tiles = new Tile[1][3];
 		
 		float x = Constants.WORLD_WIDTH/2;
 		float y = Constants.WORLD_WIDTH/2;
 		float tmpSize = 10.0f;
 		
 		tiles[0][0] = new Tile(x, y, tmpSize, tmpSize, TileType.STRAIGHT);
-		
 		x += tmpSize;
-		y += tmpSize;
-		
 		tiles[0][1] = new Tile(x, y, tmpSize, tmpSize, TileType.TURN);
+		x -= tmpSize;
+		y += tmpSize;
+		tiles[0][2] = new Tile(x, y, tmpSize, tmpSize, TileType.ERROR);
 	}
 	
 	private void renderDebug(ShapeRenderer renderer){
