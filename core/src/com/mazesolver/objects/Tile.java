@@ -6,6 +6,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.mazesolver.objects.Tile.TileType;
+import com.mazesolver.util.Helpers;
 
 public class Tile {
 	enum TileType {
@@ -40,7 +42,8 @@ public class Tile {
 	private boolean connected = false;
 	
 	private Color fillColor, borderColor, pathColor, connectedPathColor;
-	private float borderSize = 1.5f;
+	private float borderWidth;
+	private float pathWidth;
 
 	public Tile(float x, float y, float width, float height, TileType type){
 		this.x = x;
@@ -56,6 +59,8 @@ public class Tile {
 		pathColor = new Color(1, 0, 0, 1);
 		borderColor = new Color(0, 1, 0, 1);
 		connectedPathColor = Color.valueOf("#F0C51A2");
+		this.borderWidth = this.width / 10.0f;
+		this.pathWidth = this.width / 2.0f;
 		
 		initExits();
 		
@@ -82,23 +87,23 @@ public class Tile {
 	
 	
 	private void drawStraightTile(ShapeRenderer renderer){
-		//Gdx.gl.glLineWidth(5);
-		
+		// === Filled ===
 		renderer.begin(ShapeType.Filled);
 		renderer.setColor(this.fillColor);
 		renderer.rect(x, y, width, height);
-		
-		//renderer.set(ShapeType.Line);
 		renderer.end();
 		
-		//
+		// === Line ===
 		renderer.begin(ShapeType.Line);
-		
-		renderer.setColor(this.getPathColor());
-		renderer.line(cx, y, cx, y+height);
+		// draw the border
+		Gdx.gl.glLineWidth(this.borderWidth);
 		renderer.setColor(this.borderColor);
-		renderer.rect(x,y,width,height);
-		
+		renderer.rect(x,y,width,height);//border
+		renderer.flush(); 
+		// draw the path
+		Gdx.gl.glLineWidth(this.pathWidth);
+		renderer.setColor(this.getPathColor());
+		renderer.line(cx, y, cx, y+height); //path line
 		renderer.end();
 	}
 	
@@ -122,18 +127,25 @@ public class Tile {
 	
 	private void drawTurnTile(ShapeRenderer renderer){
 		
-		renderer.begin(ShapeType.Line);
-
-		renderer.setColor(1, 0, 0, 1);
+		// === Filled ===
+		renderer.begin(ShapeType.Filled);
+		renderer.setColor(this.fillColor);
 		renderer.rect(x, y, width, height);
-
 		renderer.end();
 		
+		// === Line ===
 		renderer.begin(ShapeType.Line);
-		
-		renderer.setColor(this.getPathColor());
+		// draw the border
+		Gdx.gl.glLineWidth(this.borderWidth);
 		renderer.setColor(this.borderColor);
-		renderer.rect(x,y,width,height);
+		renderer.rect(x,y,width,height);//border
+		renderer.flush(); 
+		
+		// draw the path
+		Gdx.gl.glLineWidth(this.pathWidth);
+		renderer.setColor(this.getPathColor());
+		renderer.line(cx, y + height, cx, cy); // top to middle
+		renderer.line(cx, cy, x + width, cy); // middle to right
 		
 		renderer.end();
 	}
@@ -164,28 +176,121 @@ public class Tile {
 	
 
 	private void drawTSectionTile(ShapeRenderer renderer) {
-		// TODO Auto-generated method stub
+		// === Filled ===
+		renderer.begin(ShapeType.Filled);
+		renderer.setColor(this.fillColor);
+		renderer.rect(x, y, width, height);
+		renderer.end();
 		
+		// === Line ===
+		renderer.begin(ShapeType.Line);
+		// draw the border
+		Gdx.gl.glLineWidth(this.borderWidth);
+		renderer.setColor(this.borderColor);
+		renderer.rect(x,y,width,height);//border
+		renderer.flush(); 
+		
+		// draw the path
+		Gdx.gl.glLineWidth(this.pathWidth);
+		renderer.setColor(this.getPathColor());
+		renderer.line(cx, y + height, cx, cy); // top to middle
+		renderer.line(x, cy, x + width, cy); // left to right
+		
+		renderer.end();
 	}
 
 	private void drawStartTile(ShapeRenderer renderer) {
-		// TODO Auto-generated method stub
+		// === Filled ===
+		renderer.begin(ShapeType.Filled);
+		renderer.setColor(this.fillColor);
+		renderer.rect(x, y, width, height);
+		renderer.end();
 		
+		// === Line ===
+		renderer.begin(ShapeType.Line);
+		// draw the border
+		Gdx.gl.glLineWidth(this.borderWidth);
+		renderer.setColor(this.borderColor);
+		renderer.rect(x,y,width,height);//border
+		renderer.flush(); 
+		
+		// draw the path
+		Gdx.gl.glLineWidth(this.pathWidth);
+		renderer.setColor(this.getPathColor());
+		renderer.line(cx, y + height, cx, cy); // top to middle
+		
+		renderer.end();
 	}
 
 	private void drawEndTile(ShapeRenderer renderer) {
-		// TODO Auto-generated method stub
+		// === Filled ===
+		renderer.begin(ShapeType.Filled);
+		renderer.setColor(this.fillColor);
+		renderer.rect(x, y, width, height);
 		
+		renderer.setColor(this.getPathColor());
+		renderer.circle(cx, cy, this.width/6.0f, 12);
+		renderer.end();
+		
+		// === Line ===
+		renderer.begin(ShapeType.Line);
+		// draw the border
+		Gdx.gl.glLineWidth(this.borderWidth);
+		renderer.setColor(this.borderColor);
+		renderer.rect(x,y,width,height);//border
+		renderer.flush(); 
+		
+		// draw the path
+		Gdx.gl.glLineWidth(this.pathWidth);
+		renderer.setColor(this.getPathColor());
+		renderer.line(cx, y + height, cx, cy); // top to middle
+		
+		renderer.end();
 	}
 
 	private void drawEmptyTile(ShapeRenderer renderer) {
-		// TODO Auto-generated method stub
+		// === Filled ===
+		renderer.begin(ShapeType.Filled);
+		renderer.setColor(this.fillColor);
+		renderer.rect(x, y, width, height);
+		renderer.setColor(Helpers.colorLuminance(this.fillColor, -0.2f));
+		float offset = this.width * 0.1f;
+		renderer.rect(x + offset, y + offset, width - offset*2, height - offset*2);
 		
+		renderer.end();
+		
+		// === Line ===
+		renderer.begin(ShapeType.Line);
+		// draw the border
+		Gdx.gl.glLineWidth(this.borderWidth);
+		renderer.setColor(this.borderColor);
+		renderer.rect(x,y,width,height);//border
+		renderer.flush(); 	
+		renderer.end();		
 	}
 
 	private void drawCrossTile(ShapeRenderer renderer) {
-		// TODO Auto-generated method stub
+		// === Filled ===
+		renderer.begin(ShapeType.Filled);
+		renderer.setColor(this.fillColor);
+		renderer.rect(x, y, width, height);
+		renderer.end();
 		
+		// === Line ===
+		renderer.begin(ShapeType.Line);
+		// draw the border
+		Gdx.gl.glLineWidth(this.borderWidth);
+		renderer.setColor(this.borderColor);
+		renderer.rect(x,y,width,height);//border
+		renderer.flush(); 
+		
+		// draw the path
+		Gdx.gl.glLineWidth(this.pathWidth);
+		renderer.setColor(this.getPathColor());
+		renderer.line(cx, y + height, x, cy); // top to bottom
+		renderer.line(x, cy, x + width, cy); // left to right
+		
+		renderer.end();
 	}
 	
 	
@@ -228,6 +333,10 @@ public class Tile {
 		//restore transformation matrix
 		renderer.identity();
 
+	}
+
+	public TileType getType() {
+		return this.type;
 	}
 
 	

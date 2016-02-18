@@ -3,29 +3,35 @@ package com.mazesolver;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mazesolver.objects.Level;
+import com.mazesolver.objects.LevelManager;
 import com.mazesolver.screens.AbstractScreen;
 import com.mazesolver.screens.MainMenuScreen;
+import com.mazesolver.screens.PlayScreen;
 import com.mazesolver.util.Constants;
 
 public class MazeSolverMain extends Game {
-	SpriteBatch batch;
-	Texture img;
+	//SpriteBatch batch;
+	//Texture img;
+	
+	private LevelManager levelManager;
 	
 	@Override
 	public void create () {
-		
 		if(Constants.DEBUG){
 			Gdx.app.setLogLevel(Application.LOG_DEBUG);
 		}
 		Gdx.app.log("tag", "log message");
 		
-		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
-		setToScreen(new MainMenuScreen(this));
+		//batch = new SpriteBatch();
+		//img = new Texture("badlogic.jpg");
+		
+		levelManager = new LevelManager();
+		Level nextLevel = levelManager.getNextLevel();
+		
+		//setToScreen(new MainMenuScreen(this));
+		setToScreen(new PlayScreen(this, nextLevel));
 		Gdx.app.debug("temp", "in main");
-		//setScreen(new PlayScreen(this));
 	}
 
 	@Override

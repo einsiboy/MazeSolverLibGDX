@@ -18,11 +18,18 @@ public class PlayScreen extends AbstractScreen {
 	public PlayScreen(Game game) {
 		super(game);
 		Gdx.app.debug(TAG, "switched to play screen");
-
 		
 		level = new Level();
 		renderer = new ShapeRenderer();
 		
+	}
+	
+	public PlayScreen(Game game, Level level){
+		super(game);
+		Gdx.app.debug(TAG, "switched to play screen");
+
+		this.level = level;
+		this.renderer = new ShapeRenderer();
 	}
 	
 	private void drawDebug(){

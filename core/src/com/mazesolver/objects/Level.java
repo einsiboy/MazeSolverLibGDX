@@ -8,6 +8,7 @@ import com.mazesolver.objects.Tile.TileType;
 import com.mazesolver.util.Constants;
 
 public class Level {
+	
 
 	Tile[][] tiles;
 	
@@ -24,6 +25,28 @@ public class Level {
 		x -= tmpSize;
 		y += tmpSize;
 		tiles[0][2] = new Tile(x, y, tmpSize, tmpSize, TileType.ERROR);
+	}
+	
+	public Level(TileType tileTypeArr[][]){
+		initTilesFromTileType(tileTypeArr);
+	}
+	
+	private void initTilesFromTileType(TileType tileTypeArr[][]){
+		float tileSize = Constants.WORLD_WIDTH / tileTypeArr.length;
+		this.tiles = new Tile[tileTypeArr.length][tileTypeArr[0].length];
+		for(int i = 0; i < tileTypeArr.length; i++){
+			for(int j = 0; j < tileTypeArr[i].length; j++){
+				float xPos = j*tileSize;
+				float yPos = i*tileSize;
+				this.tiles[i][j] = new Tile(xPos, yPos, tileSize, tileSize, tileTypeArr[i][j]);
+				
+				if(this.tiles[i][j].getType() == TileType.END){
+					//push finish point
+				} else if(this.tiles[i][j].getType() == TileType.START){
+					//push start point
+				}
+			}
+		}
 	}
 	
 	private void renderDebug(ShapeRenderer renderer){

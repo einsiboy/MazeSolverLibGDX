@@ -91,7 +91,7 @@ public class MainMenuScreen extends AbstractScreen {
 
 	@Override
 	public void render(float deltaTime) {
-		Gdx.app.debug(TAG, "main menu screen rendering");
+		//Gdx.app.debug(TAG, "main menu screen rendering");
 		update(deltaTime);
 		draw(batch);
 	}
