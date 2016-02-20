@@ -8,6 +8,7 @@ import com.mazesolver.objects.LevelManager;
 import com.mazesolver.screens.AbstractScreen;
 import com.mazesolver.screens.MainMenuScreen;
 import com.mazesolver.screens.PlayScreen;
+import com.mazesolver.util.Assets;
 import com.mazesolver.util.Constants;
 
 public class MazeSolverMain extends Game {
@@ -29,8 +30,8 @@ public class MazeSolverMain extends Game {
 		levelManager = new LevelManager();
 		Level nextLevel = levelManager.getNextLevel();
 		
-		//setToScreen(new MainMenuScreen(this));
-		setToScreen(new PlayScreen(this, nextLevel));
+		setToScreen(new MainMenuScreen(this));
+		//setToScreen(new PlayScreen(this, nextLevel));
 		Gdx.app.debug("temp", "in main");
 	}
 
@@ -44,7 +45,17 @@ public class MazeSolverMain extends Game {
 		batch.end();*/
 	}
 	
+	@Override
+	public void dispose(){
+		Assets.instance.dispose();
+	}
+	
 	public void setToScreen(AbstractScreen screen){
 		setScreen(screen);
+	}
+	
+	public void nextLevel(){
+		Level nextLevel = levelManager.getNextLevel();
+		setToScreen(new PlayScreen(this, nextLevel));
 	}
 }

@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Vector3;
 import com.mazesolver.objects.Level;
 import com.mazesolver.util.Constants;
 
@@ -112,5 +113,6 @@ public class PlayScreen extends AbstractScreen {
 		// TODO Auto-generated method stub
 		
 	}
+
 
 }

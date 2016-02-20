@@ -5,7 +5,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -13,6 +15,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.mazesolver.MazeSolverMain;
+import com.mazesolver.util.Assets;
+import com.mazesolver.util.Constants;
 import com.mazesolver.util.Constants;
 
 public class MainMenuScreen extends AbstractScreen {
@@ -21,12 +26,14 @@ public class MainMenuScreen extends AbstractScreen {
 	
 	private SpriteBatch batch;
 	private Stage stage;
+	private Sprite background;
 	
 	public MainMenuScreen(Game game) {
 		super(game);
 
 		Gdx.app.debug(TAG, "in MainMenuScreen");
 		this.batch = new SpriteBatch();
+		background = Assets.instance.spriteBackground;
 		initStage(); //temp testing
 	}
 	
@@ -50,7 +57,9 @@ public class MainMenuScreen extends AbstractScreen {
 		    public void clicked(InputEvent event, float x, float y) {
 				//game.setScreen( new PlayScreen(game) );
 				//dispose();
-				switchScreen(new PlayScreen(game));
+				//switchScreen(new PlayScreen(game));
+				((MazeSolverMain) game).nextLevel();
+				dispose();
 		    };
 		});
 		
@@ -77,11 +86,14 @@ public class MainMenuScreen extends AbstractScreen {
 	    // specified in under Constants.WORLD_WIDTH and HEIGHT
 	    batch.setProjectionMatrix(camera.combined);
 	    
+		stage.draw();
 	    // Everything is drawn in batches strong performance gains, so all drawing
 	    // should be done between batch.begin() and batch.end()
 	    batch.begin();
-	    
-		stage.draw();
+	    //background.setPosition(Constants.WORLD_WIDTH/2, Constants.WORLD_HEIGHT/2);
+	    background.draw(batch);
+	    //batch.draw(Assets.instance.textureBackground, 0, 0);
+	    Gdx.app.debug(TAG, background.getX() + " " +  background.getY());
 		
 		batch.end();
 		
@@ -140,5 +152,6 @@ public class MainMenuScreen extends AbstractScreen {
 		batch.dispose();
 		stage.dispose();
 	}
+
 
 }

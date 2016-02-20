@@ -37,7 +37,8 @@ public class Level {
 		for(int i = 0; i < tileTypeArr.length; i++){
 			for(int j = 0; j < tileTypeArr[i].length; j++){
 				float xPos = j*tileSize;
-				float yPos = i*tileSize;
+				//float yPos = i*tileSize;
+				float yPos = tileTypeArr.length* tileSize - (i+1)*tileSize;
 				this.tiles[i][j] = new Tile(xPos, yPos, tileSize, tileSize, tileTypeArr[i][j]);
 				
 				if(this.tiles[i][j].getType() == TileType.END){

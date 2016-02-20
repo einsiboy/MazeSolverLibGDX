@@ -3,18 +3,22 @@ package com.mazesolver.screens;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Vector3;
 import com.mazesolver.util.Constants;
+import com.mazesolver.util.Input;
 
 public abstract class AbstractScreen implements Screen {
 	
 	protected Game game;
 	protected OrthographicCamera camera;
+	protected Input input;
 	
 	public AbstractScreen(Game game){
 		this.game = game;
 		this.camera = new OrthographicCamera();
-		
 		initCamera();
+		
+		input = new Input(this);
 	}
 	
 	protected void initCamera(){
@@ -28,6 +32,10 @@ public abstract class AbstractScreen implements Screen {
 		//just a convenience method which calls dispose in addition to setScreen()
 		game.setScreen(screen);
 		dispose();
+	}
+	
+	public OrthographicCamera getCamera(){
+		return this.camera;
 	}
 
 	public abstract void render(float deltaTime);
