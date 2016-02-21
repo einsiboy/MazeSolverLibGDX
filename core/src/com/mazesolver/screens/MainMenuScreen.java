@@ -4,20 +4,23 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Pixmap.Format;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.mazesolver.MazeSolverMain;
 import com.mazesolver.util.Assets;
-import com.mazesolver.util.Constants;
 import com.mazesolver.util.Constants;
 
 public class MainMenuScreen extends AbstractScreen {
@@ -27,6 +30,8 @@ public class MainMenuScreen extends AbstractScreen {
 	private SpriteBatch batch;
 	private Stage stage;
 	private Sprite background;
+	private Skin skin;
+	private Pixmap playBtnPixmap;
 	
 	public MainMenuScreen(Game game) {
 		super(game);
@@ -43,6 +48,7 @@ public class MainMenuScreen extends AbstractScreen {
 		// virtual world coordinate system to the stage as well.
 		
 		this.stage = new Stage();
+		//stage.setViewport(new StretchViewport(Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT, camera));
 		
 		Label label = new Label("Test Label", new LabelStyle(new BitmapFont(), Color.BLUE ) );
 		
@@ -63,8 +69,43 @@ public class MainMenuScreen extends AbstractScreen {
 		    };
 		});
 		
+		TextButton playButton = makePlayButton();
+		
 		stage.addActor(label);
 		stage.addActor(btn);
+		stage.addActor(playButton);
+	}
+	
+	private TextButton makePlayButton(){
+		// A skin can be loaded via JSON or defined programmatically, either is fine. Using a skin is optional but strongly
+				// recommended solely for the convenience of getting a texture, region, etc as a drawable, tinted drawable, etc.
+				skin = new Skin();
+				// Generate a 1x1 white texture and store it in the skin named "white".
+				this.playBtnPixmap = new Pixmap(Gdx.graphics.getWidth() / 5, Gdx.graphics.getHeight() / 20, Format.RGBA8888);
+				playBtnPixmap.setColor(Color.GREEN);
+				playBtnPixmap.fill();
+				
+
+				skin.add("white", new Texture(playBtnPixmap));
+
+				// Store the default libgdx font under the name "default".
+				BitmapFont bfont=new BitmapFont();
+				//bfont.getData().scale(1.0f);;
+				skin.add("default",bfont);
+
+				// Configure a TextButtonStyle and name it "default". Skin resources are stored by type, so this doesn't overwrite the font.
+				TextButtonStyle textButtonStyle = new TextButtonStyle();
+				textButtonStyle.up = skin.newDrawable("white", Color.DARK_GRAY);
+				textButtonStyle.down = skin.newDrawable("white", Color.DARK_GRAY);
+				textButtonStyle.checked = skin.newDrawable("white", Color.BLUE);
+				textButtonStyle.over = skin.newDrawable("white", Color.LIGHT_GRAY);
+
+				textButtonStyle.font = skin.getFont("default");
+
+				skin.add("default", textButtonStyle);
+				
+				TextButton btn = new TextButton("Play game! dada", textButtonStyle);
+				return btn;
 	}
 	
 	
@@ -113,6 +154,8 @@ public class MainMenuScreen extends AbstractScreen {
 		camera.viewportHeight = (Constants.WORLD_WIDTH / width) * height;
 		camera.update();
 		
+		//stage.setViewport(new StretchViewport(camera.viewportWidth, camera.viewportHeight, camera));
+		//stage.getViewport().update((int)camera.viewportWidth, (int)camera.viewportHeight, true);
 		
 		/*
 		stage.getCamera().viewportHeight = camera.viewportHeight;
@@ -151,6 +194,8 @@ public class MainMenuScreen extends AbstractScreen {
 	public void dispose() {
 		batch.dispose();
 		stage.dispose();
+		skin.dispose();
+		playBtnPixmap.dispose();
 	}
 
 

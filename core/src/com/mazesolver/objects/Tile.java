@@ -6,8 +6,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.mazesolver.objects.Tile.TileType;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector3;
 import com.mazesolver.util.Helpers;
+import com.mazesolver.util.Input;
 
 public class Tile {
 	enum TileType {
@@ -45,6 +47,9 @@ public class Tile {
 	private float borderWidth;
 	private float pathWidth;
 
+	private Vector3 pos; //keep a reference to one, to avoid GC
+	private Rectangle collisionRect;
+	
 	public Tile(float x, float y, float width, float height, TileType type){
 		this.x = x;
 		this.y = y;
@@ -54,6 +59,10 @@ public class Tile {
 		
 		this.cx = this.x + this.width/2.0f;
 		this.cy = this.y + this.height/2.0f;
+		
+		this.pos = new Vector3();
+		this.collisionRect = new Rectangle(x, y, width, height);
+
 
 		fillColor = new Color(0, 0, 1, 1);
 		pathColor = new Color(1, 0, 0, 1);
@@ -74,7 +83,7 @@ public class Tile {
 	
 	/**direction; 1 is clockwise and -1 is counter clockwise*/
 	private void rotate(int direction){
-		Gdx.app.debug(TAG, "rotating");
+		Gdx.app.debug(TAG, "rotating, this.x: " + this.x + ", this.y: " + this.y);
 		if (direction == 1 || direction == -1){
 			this.orientation = (this.orientation + direction + 4) % 4;
 		} else{
@@ -293,11 +302,27 @@ public class Tile {
 		renderer.end();
 	}
 	
-	
-	public void update(float dt){
+	private boolean clickedOn(Input input){
 		if(Gdx.input.justTouched()){
+			pos = input.getWorldTouchPos();
+			//Gdx.app.debug(TAG, "worldTouch pos: " + pos);
+			if(this.collisionRect.contains(pos.x,pos.y)){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	
+	public void update(float dt, Input input){
+
+		if(this.clickedOn(input)){
 			this.rotate(1);
 		}
+		
+		//if(Gdx.input.justTouched()){
+		//	this.rotate(1);
+		//}
 	}
 	
 	//might switch to SpriteBatch if / when we make actual graphics for the game

@@ -1,11 +1,11 @@
 package com.mazesolver.objects;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Vector3;
 import com.mazesolver.objects.Tile.TileType;
 import com.mazesolver.util.Constants;
+import com.mazesolver.util.Input;
 
 public class Level {
 	
@@ -68,11 +68,15 @@ public class Level {
 		}
 	}
 	
-	public void update(float dt){
+	public void update(float dt, Input input){
+		//if(Gdx.input.justTouched()){
+		//	Vector3 pos = input.getWorldTouchPos();
+		//}
+		
 		//update all tiles
 		for(int i = 0; i < tiles.length; i++){
 			for(int j = 0; j < tiles[i].length; j++){
-				tiles[i][j].update(dt);
+				tiles[i][j].update(dt, input);
 			}
 		}
 	}

@@ -59,7 +59,7 @@ public class PlayScreen extends AbstractScreen {
 	}
 	
 	private void update(float dt){
-		level.update(dt);
+		level.update(dt, input);
 	}
 
 	@Override
@@ -71,6 +71,7 @@ public class PlayScreen extends AbstractScreen {
 	    
 	    update(deltaTime);
 	    draw();
+	    this.input.clearInputState();
 	    
 
 		
