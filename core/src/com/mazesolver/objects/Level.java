@@ -11,6 +11,7 @@ public class Level {
 	
 
 	Tile[][] tiles;
+	Tile startTile;
 	
 	public Level(){
 		tiles = new Tile[1][3];
@@ -44,7 +45,7 @@ public class Level {
 				if(this.tiles[i][j].getType() == TileType.END){
 					//push finish point
 				} else if(this.tiles[i][j].getType() == TileType.START){
-					//push start point
+					this.startTile = this.tiles[i][j];
 				}
 			}
 		}
@@ -69,15 +70,21 @@ public class Level {
 	}
 	
 	public void update(float dt, Input input){
-		//if(Gdx.input.justTouched()){
-		//	Vector3 pos = input.getWorldTouchPos();
-		//}
 		
 		//update all tiles
 		for(int i = 0; i < tiles.length; i++){
 			for(int j = 0; j < tiles[i].length; j++){
+				tiles[i][j].setConnection(false);
 				tiles[i][j].update(dt, input);
+				
 			}
 		}
+		
+		checkConnections();
+	}
+
+	private void checkConnections() {
+		startTile.setConnection(true);
+		
 	}
 }

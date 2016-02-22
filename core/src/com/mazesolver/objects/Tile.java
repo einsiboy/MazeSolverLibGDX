@@ -364,5 +364,9 @@ public class Tile {
 		return this.type;
 	}
 
+	public void setConnection(boolean bool) {
+		this.connected = bool;
+	}
+
 	
 }
