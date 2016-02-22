@@ -80,11 +80,42 @@ public class Level {
 			}
 		}
 		
-		checkConnections();
+		checkConnections(startTile);
 	}
 
-	private void checkConnections() {
-		startTile.setConnection(true);
+	public boolean isSolved() {
+		for (int i = 0; i < tiles.length; i++) {
+			for (int j = 0; j < tiles[i].length; j++) {
+				if (tiles[i][j].getType() == TileType.END)
+					if (!tiles[i][j].getConnection())
+						return false;
+			}
+		}
+		return true;
+	}
 		
+	private boolean equals(Tile tile1, Tile tile2) {
+		return tile1.row == tile2.row && tile1.col == tile2.col;
+	}
+		
+	private boolean isLinked(Tile tile1, Tile tile2) {
+		int[] exits = tile1.getExits();
+		for (int exit : exits) {
+			if (equals(getTile(tile1, (exit+tile1.getOrientation())%4), tile2))
+				return true;
+		}
+		return false;
+	}
+	
+	private void checkConnections(Tile tile) {
+		if (tile.getConnection())
+			return;
+		tile.setConnection(true);
+		int[] exits = tile.getExits();
+		for (int exit : exits) {
+			Tile tmp = getTile(tile, (exit+tile.getOrientation())%4);
+			if(isLinked(tile, tmp))
+				checkConnections(tmp);
+		}
 	}
 }

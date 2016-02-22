@@ -35,7 +35,8 @@ public class Tile {
 	
 	private float x, y, width, height;
 	private float cx, cy; //center x an y
-	
+	public final int row, col;
+
 	private TileType type;
 	private int orientation;
 	float angle = 0f;
@@ -51,13 +52,15 @@ public class Tile {
 	
 	int[] exits;
 
-	public Tile(float x, float y, float width, float height, TileType type){
+	public Tile(float x, float y, float width, float height, TileType type, int row, int col) {
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
 		this.type = type;
-		
+		this.row = row;
+		this.col = col;
+
 		this.cx = this.x + this.width/2.0f;
 		this.cy = this.y + this.height/2.0f;
 		
@@ -368,6 +371,12 @@ public class Tile {
 	public void setConnection(boolean bool) {
 		this.connected = bool;
 	}
-
 	
+	public boolean getConnection() {
+		return connected;
+	}
+	    
+    public int getOrientation() {
+        return orientation;
+    }
 }
