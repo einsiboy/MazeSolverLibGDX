@@ -17,19 +17,18 @@ public class Tile {
 		STRAIGHT, TURN, T_SECTION, CROSS, START, END, EMPTY, ERROR; //TODO: just remove the error type
 	}
 	
-	public class Exits{
-		public Exits instance = new Exits();
-		public Hashtable<TileType, int[]> exits = new Hashtable();
-
-		private Exits(){
-			exits.put(TileType.TURN, new int[]{0,1} );
-			exits.put(TileType.STRAIGHT, new int[]{0,2});
-			exits.put(TileType.T_SECTION, new int[]{0,1,3});
-			exits.put(TileType.CROSS, new int[]{0,1,2,3});
-			exits.put(TileType.START, new int[]{0});
-			exits.put(TileType.END, new int[]{0});
-			exits.put(TileType.EMPTY, new int[]{});
-		}
+	public static class Exits{
+		//public static final Exits instance = new Exits();
+		public static Hashtable<TileType, int[]> exits = new Hashtable<TileType, int[]>() 
+		{{
+			put(TileType.TURN, new int[]{0,1});
+			put(TileType.STRAIGHT, new int[]{0,2});
+			put(TileType.T_SECTION, new int[]{0,1,3});
+			put(TileType.CROSS, new int[]{0,1,2,3});
+			put(TileType.START, new int[]{0});
+			put(TileType.END, new int[]{0});
+			put(TileType.EMPTY, new int[]{});
+		}};
 	}
 	
 	private final static String TAG = Tile.class.getName();
@@ -50,6 +49,8 @@ public class Tile {
 	private Vector3 pos; //keep a reference to one, to avoid GC
 	private Rectangle collisionRect;
 	
+	int[] exits;
+
 	public Tile(float x, float y, float width, float height, TileType type){
 		this.x = x;
 		this.y = y;
@@ -77,8 +78,8 @@ public class Tile {
 			this.connected = true;
 		}
 	}
-	
 	private void initExits(){
+		this.exits = Exits.exits.get(this.type);
 	}
 	
 	/**direction; 1 is clockwise and -1 is counter clockwise*/

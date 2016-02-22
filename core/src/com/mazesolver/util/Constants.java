@@ -10,4 +10,5 @@ public class Constants {
 	public static final float WORLD_HEIGHT = 100.0f;
 	
 	//..
+	public static final String TITLE = "MAZESOLVER";
 }

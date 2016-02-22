@@ -50,15 +50,20 @@ public class MainMenuScreen extends AbstractScreen {
 		this.stage = new Stage();
 		//stage.setViewport(new StretchViewport(Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT, camera));
 		
-		Label label = new Label("Test Label", new LabelStyle(new BitmapFont(), Color.BLUE ) );
+		Label title = new Label(Constants.TITLE, new LabelStyle(new BitmapFont(), Color.RED ) );
+		title.setX(Gdx.graphics.getWidth()/2 - title.getWidth() / 2);
+		float offsetTitle = Gdx.graphics.getHeight() * 0.1f;
+		title.setY(Gdx.graphics.getHeight()/ 2 + offsetTitle);
 		
-		TextButtonStyle style = new TextButtonStyle();
-		style.font = new BitmapFont();
-		TextButton btn = new TextButton("Play Game", style);
 		
-		btn.setX(Constants.WORLD_WIDTH/2.0f);
-		btn.setY(Constants.WORLD_HEIGHT/2.0f);
-		btn.addListener(new ClickListener(){
+		TextButton playButton = makePlayButton();
+		playButton.setX(Gdx.graphics.getWidth()/2 - playButton.getWidth()/2);
+		playButton.setY(Gdx.graphics.getHeight() / 2);
+		
+		
+		//btn.setX(Constants.WORLD_WIDTH/2.0f);
+		//btn.setY(Constants.WORLD_HEIGHT/2.0f);
+		playButton.addListener(new ClickListener(){
 			@Override
 		    public void clicked(InputEvent event, float x, float y) {
 				//game.setScreen( new PlayScreen(game) );
@@ -69,43 +74,41 @@ public class MainMenuScreen extends AbstractScreen {
 		    };
 		});
 		
-		TextButton playButton = makePlayButton();
 		
-		stage.addActor(label);
-		stage.addActor(btn);
+		stage.addActor(title);
 		stage.addActor(playButton);
 	}
 	
 	private TextButton makePlayButton(){
 		// A skin can be loaded via JSON or defined programmatically, either is fine. Using a skin is optional but strongly
-				// recommended solely for the convenience of getting a texture, region, etc as a drawable, tinted drawable, etc.
-				skin = new Skin();
-				// Generate a 1x1 white texture and store it in the skin named "white".
-				this.playBtnPixmap = new Pixmap(Gdx.graphics.getWidth() / 5, Gdx.graphics.getHeight() / 20, Format.RGBA8888);
-				playBtnPixmap.setColor(Color.GREEN);
-				playBtnPixmap.fill();
-				
+		// recommended solely for the convenience of getting a texture, region, etc as a drawable, tinted drawable, etc.
+		skin = new Skin();
+		// Generate a 1x1 white texture and store it in the skin named "white".
+		this.playBtnPixmap = new Pixmap(Gdx.graphics.getWidth() / 5, Gdx.graphics.getHeight() / 20, Format.RGBA8888);
+		playBtnPixmap.setColor(Color.GREEN);
+		playBtnPixmap.fill();
+		
 
-				skin.add("white", new Texture(playBtnPixmap));
+		skin.add("white", new Texture(playBtnPixmap));
 
-				// Store the default libgdx font under the name "default".
-				BitmapFont bfont=new BitmapFont();
-				//bfont.getData().scale(1.0f);;
-				skin.add("default",bfont);
+		// Store the default libgdx font under the name "default".
+		BitmapFont bfont=new BitmapFont();
+		//bfont.getData().scale(1.0f);;
+		skin.add("default",bfont);
 
-				// Configure a TextButtonStyle and name it "default". Skin resources are stored by type, so this doesn't overwrite the font.
-				TextButtonStyle textButtonStyle = new TextButtonStyle();
-				textButtonStyle.up = skin.newDrawable("white", Color.DARK_GRAY);
-				textButtonStyle.down = skin.newDrawable("white", Color.DARK_GRAY);
-				textButtonStyle.checked = skin.newDrawable("white", Color.BLUE);
-				textButtonStyle.over = skin.newDrawable("white", Color.LIGHT_GRAY);
+		// Configure a TextButtonStyle and name it "default". Skin resources are stored by type, so this doesn't overwrite the font.
+		TextButtonStyle textButtonStyle = new TextButtonStyle();
+		textButtonStyle.up = skin.newDrawable("white", Color.DARK_GRAY);
+		textButtonStyle.down = skin.newDrawable("white", Color.DARK_GRAY);
+		textButtonStyle.checked = skin.newDrawable("white", Color.BLUE);
+		textButtonStyle.over = skin.newDrawable("white", Color.LIGHT_GRAY);
 
-				textButtonStyle.font = skin.getFont("default");
+		textButtonStyle.font = skin.getFont("default");
 
-				skin.add("default", textButtonStyle);
-				
-				TextButton btn = new TextButton("Play game! dada", textButtonStyle);
-				return btn;
+		skin.add("default", textButtonStyle);
+		
+		TextButton btn = new TextButton("Play game! dada", textButtonStyle);
+		return btn;
 	}
 	
 	
@@ -127,17 +130,14 @@ public class MainMenuScreen extends AbstractScreen {
 	    // specified in under Constants.WORLD_WIDTH and HEIGHT
 	    batch.setProjectionMatrix(camera.combined);
 	    
-		stage.draw();
 	    // Everything is drawn in batches strong performance gains, so all drawing
 	    // should be done between batch.begin() and batch.end()
 	    batch.begin();
-	    //background.setPosition(Constants.WORLD_WIDTH/2, Constants.WORLD_HEIGHT/2);
 	    background.draw(batch);
-	    //batch.draw(Assets.instance.textureBackground, 0, 0);
-	    Gdx.app.debug(TAG, background.getX() + " " +  background.getY());
-		
 		batch.end();
-		
+		//the stage has its own SpriteBatch so place outside batch begin, end
+		stage.draw();
+
 		
 		
 	}
