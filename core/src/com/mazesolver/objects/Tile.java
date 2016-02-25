@@ -35,7 +35,7 @@ public class Tile {
 	
 	private float x, y, width, height;
 	private float cx, cy; //center x an y
-	public final int row, col;
+	private final int row, col;
 
 	private TileType type;
 	private int orientation;
@@ -130,7 +130,7 @@ public class Tile {
 	 * rotate relative to the current tile rotation
 	 */
 	private void setupTransformationMatrix(ShapeRenderer renderer){
-		angle = (this.orientation % 4) * 90;
+		angle = (this.orientation % 4) * (270);
 		
 		renderer.identity();
 		renderer.translate(cx, cy, 0);
@@ -375,8 +375,35 @@ public class Tile {
 	public boolean getConnection() {
 		return connected;
 	}
-	    
+
+	public void setOrientation(int orientation) {
+		this.orientation = orientation;
+	}
+	
     public int getOrientation() {
         return orientation;
+    }
+    
+    public int[] getExits() {
+    	return exits;
+    }
+    
+    public int getRow() {
+    	return row;
+    }
+    
+    public int getCol() {
+    	return col;
+    }
+    
+    // hasExit returns true if the tile has an exit facing in the
+    // direction indicated by dir, e.g. hasExit(0) returns true
+    // if the tile has an exit facing up.
+    public boolean hasExit(int dir) {
+    	for (int exit : exits) {
+    		if (exit == (dir-orientation+4)%4)
+    			return true;
+    	}
+    	return false;
     }
 }

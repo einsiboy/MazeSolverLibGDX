@@ -30,6 +30,7 @@ public class PlayScreen extends AbstractScreen {
 		Gdx.app.debug(TAG, "switched to play screen");
 
 		this.level = level;
+		this.level.randomize();
 		this.renderer = new ShapeRenderer();
 	}
 	
