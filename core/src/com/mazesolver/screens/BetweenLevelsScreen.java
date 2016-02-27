@@ -2,43 +2,33 @@ package com.mazesolver.screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Pixmap.Format;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.mazesolver.MazeSolverMain;
 import com.mazesolver.util.Assets;
 import com.mazesolver.util.Constants;
 
-public class MainMenuScreen extends AbstractScreen {
-	public static final String TAG = MainMenuScreen.class.getName();
+public class BetweenLevelsScreen extends AbstractScreen {
+	public static final String TAG = BetweenLevelsScreen.class.getName();
 
 	
 	private SpriteBatch batch;
 	private Stage stage;
 	private Sprite background;
 
-	
-	public MainMenuScreen(MazeSolverMain game) {
+	public BetweenLevelsScreen(MazeSolverMain game) {
 		super(game);
-
-		Gdx.app.debug(TAG, "in MainMenuScreen");
+		
+		Gdx.app.debug(TAG, "in Between levels screen");
 		this.batch = new SpriteBatch();
 		this.background = Assets.instance.spriteBackground;
-		initStage(); //temp testing
+		initStage();
 	}
 	
 	private void initStage(){
@@ -47,13 +37,15 @@ public class MainMenuScreen extends AbstractScreen {
 		
 		Label title = Assets.instance.uiElements.getTitle();
 		
-		TextButton playButton = Assets.instance.uiElements.getPlayButton();
-		playButton.addListener(new ClickListener(){
+		TextButton nextLevel = Assets.instance.uiElements.getPlayButton();
+		nextLevel.setText("Next Level Please!");
+		nextLevel.addListener(new ClickListener(){
 			@Override
 		    public void clicked(InputEvent event, float x, float y) {
 				//game.setScreen( new PlayScreen(game) );
 				//dispose();
 				//switchScreen(new PlayScreen(game));
+				Gdx.app.debug(TAG, "pressed next level button");
 				game.nextLevel();
 				dispose();
 		    };
@@ -61,13 +53,17 @@ public class MainMenuScreen extends AbstractScreen {
 		
 		//add all actors (ui elements)
 		stage.addActor(title);
-		stage.addActor(playButton);
+		stage.addActor(nextLevel);
 	}
 	
-	
-	
-	private void update(float deltaTime){
-		stage.act();
+	private void update(float dt){
+		stage.act(dt);
+	}
+
+	@Override
+	public void render(float deltaTime) {
+		update(deltaTime);
+		draw(batch);
 	}
 	
 	private void draw(SpriteBatch batch){
@@ -93,33 +89,15 @@ public class MainMenuScreen extends AbstractScreen {
 	}
 
 	@Override
-	public void render(float deltaTime) {
-		//Gdx.app.debug(TAG, "main menu screen rendering");
-		update(deltaTime);
-		draw(batch);
-	}
-
-	@Override
 	public void resize(int width, int height) {
 		camera.viewportHeight = (Constants.WORLD_WIDTH / width) * height;
-		camera.update();
-		
-		//stage.setViewport(new StretchViewport(camera.viewportWidth, camera.viewportHeight, camera));
-		//stage.getViewport().update((int)camera.viewportWidth, (int)camera.viewportHeight, true);
-		
-		/*
-		stage.getCamera().viewportHeight = camera.viewportHeight;
-		stage.getCamera().viewportWidth = camera.viewportWidth;
-		stage.getCamera().position.set(camera.position); //center the camera
-		*/
-		
+		camera.update();		
 	}
 
 	@Override
 	public void show() {
 		// TODO Auto-generated method stub
 		Gdx.input.setInputProcessor(stage);
-
 	}
 
 	@Override
@@ -142,9 +120,8 @@ public class MainMenuScreen extends AbstractScreen {
 
 	@Override
 	public void dispose() {
-		batch.dispose();
-		stage.dispose();
+		// TODO Auto-generated method stub
+		
 	}
-
 
 }

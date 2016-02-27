@@ -6,8 +6,10 @@ import com.badlogic.gdx.Gdx;
 import com.mazesolver.objects.Level;
 import com.mazesolver.objects.LevelManager;
 import com.mazesolver.screens.AbstractScreen;
+import com.mazesolver.screens.BetweenLevelsScreen;
 import com.mazesolver.screens.MainMenuScreen;
 import com.mazesolver.screens.PlayScreen;
+import com.mazesolver.screens.SubmitHighscoreScreen;
 import com.mazesolver.util.Assets;
 import com.mazesolver.util.Constants;
 
@@ -28,10 +30,14 @@ public class MazeSolverMain extends Game {
 		//img = new Texture("badlogic.jpg");
 		
 		levelManager = new LevelManager();
-		Level nextLevel = levelManager.getNextLevel();
+		//Level nextLevel = levelManager.getNextLevel();
 		
 		setToScreen(new MainMenuScreen(this));
+		
 		//setToScreen(new PlayScreen(this, nextLevel));
+		//setToScreen(new SubmitHighscoreScreen(this));
+		
+		//setToScreen(new BetweenLevelsScreen(this));
 		Gdx.app.debug("temp", "in main");
 	}
 
@@ -57,5 +63,13 @@ public class MazeSolverMain extends Game {
 	public void nextLevel(){
 		Level nextLevel = levelManager.getNextLevel();
 		setToScreen(new PlayScreen(this, nextLevel));
+	}
+	
+	public void handleLevelComplete() {
+		if(levelManager.allLevelsCompleted()){
+			setToScreen(new SubmitHighscoreScreen(this));
+		} else {
+			setToScreen(new BetweenLevelsScreen(this));
+		}
 	}
 }

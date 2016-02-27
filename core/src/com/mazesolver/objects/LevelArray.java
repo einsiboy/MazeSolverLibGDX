@@ -20,8 +20,34 @@ public final class LevelArray {
 		put(6,TileType.END);
 		}};
 		
-	private static int[][][] Levels = {
-			{ // LEVEL 1
+	private static int[][][] levels = {
+	    {	// level for testing quick completion
+	        {0, 0, 0, 0, 0, 5, 0, 0, 0, 0},
+	        {0, 1, 1, 1, 2, 4, 2, 1, 1, 0},
+	        {0, 1, 1, 1, 6, 3, 1, 1, 1, 0}, //3
+	        {0, 1, 1, 1, 0, 3, 1, 1, 1, 0},
+	        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, //5
+	        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+	        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, //7
+	        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+	        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, //9
+	        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+	    },
+		
+	    {
+	        {0, 0, 0, 0, 0, 5, 0, 0, 0, 0},
+	        {0, 1, 1, 1, 2, 3, 2, 1, 1, 0},
+	        {0, 1, 1, 1, 1, 3, 1, 1, 1, 0}, //3
+	        {0, 1, 1, 1, 1, 3, 1, 1, 1, 0},
+	        {0, 1, 1, 1, 1, 3, 1, 1, 1, 0}, //5
+	        {0, 1, 1, 1, 1, 3, 1, 1, 1, 0},
+	        {0, 1, 1, 1, 1, 3, 1, 1, 1, 0}, //7
+	        {0, 1, 1, 1, 1, 3, 1, 1, 1, 0},
+	        {0, 1, 1, 2, 2, 3, 2, 1, 1, 0}, //9
+	        {0, 0, 0, 6, 0, 3, 0, 0, 0, 0}
+	    },
+		
+		/*{ // LEVEL 1 -- Bjarna borð
 	          {2, 1, 1, 1, 2, 5, 2, 6, 6, 0},
 	          {1, 2, 1, 2, 2, 3, 2, 2, 3, 2},
 	          {1, 1, 0, 2, 2, 2, 1, 3, 2, 1}, //3
@@ -32,12 +58,12 @@ public final class LevelArray {
 	          {1, 6, 2, 2, 2, 3, 6, 0, 6, 1},
 	          {2, 2, 0, 2, 2, 1, 0, 0, 2, 3}, //9
 	          {0, 2, 1, 6, 0, 2, 1, 1, 1, 2}
-		}
+		}*/
 		
 	};
 	
 	public static TileType[][] getLevel2dArray(int level){
-		return decodeLevel(Levels[level -1 ]);
+		return decodeLevel(levels[level]);
 	}
 	
 	private static TileType[][] decodeLevel(int[][] level){
@@ -52,6 +78,10 @@ public final class LevelArray {
 		Gdx.app.debug("LEVELARRAY", Arrays.deepToString(retLevel));
 		
 		return retLevel;
+	}
+	
+	public static int getLevelsLength(){
+		return levels.length;
 	}
 	
 	

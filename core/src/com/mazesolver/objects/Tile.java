@@ -300,8 +300,8 @@ public class Tile {
 		// draw the path
 		Gdx.gl.glLineWidth(this.pathWidth);
 		renderer.setColor(this.getPathColor());
-		renderer.line(cx, y + height, x, cy); // top to bottom
-		renderer.line(x, cy, x + width, cy); // left to right
+		renderer.line(cx, y + height, cx, y); // top down
+		renderer.line(x, cy, x + width, cy); // middle to right
 		
 		renderer.end();
 	}

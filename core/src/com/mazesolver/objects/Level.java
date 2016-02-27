@@ -4,11 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.mazesolver.objects.Tile.TileType;
+import com.mazesolver.screens.BetweenLevelsScreen;
 import com.mazesolver.util.Constants;
 import com.mazesolver.util.Input;
 
 public class Level {
-	
+	public static final String TAG = Level.class.getName();
 
 	Tile[][] tiles;
 	Tile startTile;
@@ -99,6 +100,7 @@ public class Level {
 					return false;
 			}
 		}
+		Gdx.app.debug(TAG, "level is SOLVED!!");
 		return true;
 	}
 	

@@ -1,12 +1,11 @@
 package com.mazesolver.screens;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.badlogic.gdx.math.Vector3;
+import com.mazesolver.MazeSolverMain;
 import com.mazesolver.objects.Level;
 import com.mazesolver.util.Constants;
 
@@ -16,16 +15,16 @@ public class PlayScreen extends AbstractScreen {
 	private Level level;
 	private ShapeRenderer renderer;
 
-	public PlayScreen(Game game) {
+	/**used for debugging  */
+	/*public PlayScreen(MazeSolverMain game) {
 		super(game);
 		Gdx.app.debug(TAG, "switched to play screen");
 		
 		level = new Level();
 		renderer = new ShapeRenderer();
-		
-	}
+	}*/
 	
-	public PlayScreen(Game game, Level level){
+	public PlayScreen(MazeSolverMain game, Level level){
 		super(game);
 		Gdx.app.debug(TAG, "switched to play screen");
 
@@ -61,6 +60,10 @@ public class PlayScreen extends AbstractScreen {
 	
 	private void update(float dt){
 		level.update(dt, input);
+		
+		if(level.isSolved()){
+			this.game.handleLevelComplete();
+		}
 	}
 
 	@Override

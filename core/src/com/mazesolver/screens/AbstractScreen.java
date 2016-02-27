@@ -4,17 +4,18 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.math.Vector3;
+import com.mazesolver.MazeSolverMain;
 import com.mazesolver.util.Constants;
 import com.mazesolver.util.Input;
 
 public abstract class AbstractScreen implements Screen {
 	
-	protected Game game;
+	//protected Game game;
+	protected MazeSolverMain game;
 	protected OrthographicCamera camera;
 	protected Input input;
 	
-	public AbstractScreen(Game game){
+	public AbstractScreen(MazeSolverMain game){
 		this.game = game;
 		this.camera = new OrthographicCamera();
 		initCamera();
@@ -30,11 +31,6 @@ public abstract class AbstractScreen implements Screen {
 		this.camera.update();
 	}
 	
-	protected void switchScreen(AbstractScreen screen){
-		//just a convenience method which calls dispose in addition to setScreen()
-		game.setScreen(screen);
-		dispose();
-	}
 	
 	public OrthographicCamera getCamera(){
 		return this.camera;
