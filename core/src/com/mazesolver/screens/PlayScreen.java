@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.utils.Timer;
+import com.badlogic.gdx.utils.Timer.Task;
 import com.mazesolver.MazeSolverMain;
 import com.mazesolver.objects.Level;
 import com.mazesolver.util.Constants;
@@ -14,6 +16,9 @@ public class PlayScreen extends AbstractScreen {
 	
 	private Level level;
 	private ShapeRenderer renderer;
+	
+	private boolean shouldUpdate = true;
+	private float fadeOutTime = 1;
 
 	/**used for debugging  */
 	public PlayScreen(MazeSolverMain game) {
@@ -59,10 +64,16 @@ public class PlayScreen extends AbstractScreen {
 	}
 	
 	private void update(float dt){
-		level.update(dt, input);
+		if(this.shouldUpdate){
+			level.update(dt, input);
+		}
 		
 		if(level.isSolved()){
-			this.game.handleLevelComplete();
+			this.fadeOutTime -= dt;
+			
+			if(this.fadeOutTime < 0){
+				this.game.handleLevelComplete();
+			}
 		}
 	}
 
