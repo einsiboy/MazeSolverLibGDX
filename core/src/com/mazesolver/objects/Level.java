@@ -1,7 +1,9 @@
 package com.mazesolver.objects;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 import com.mazesolver.objects.Tile.TileType;
 import com.mazesolver.screens.BetweenLevelsScreen;
@@ -21,12 +23,15 @@ public class Level {
 		float y = Constants.WORLD_WIDTH/2;
 		float tmpSize = 10.0f;
 		
-		tiles[0][0] = new Tile(x, y, tmpSize, tmpSize, TileType.STRAIGHT, 0, 0);
+		tiles[0][0] = new Tile(x, y, tmpSize, tmpSize, TileType.TURN, 0, 0);
+		
 		x += tmpSize;
-		tiles[0][1] = new Tile(x, y, tmpSize, tmpSize, TileType.TURN, 0, 1);
+		tiles[0][2] = new Tile(x, y, tmpSize, tmpSize, TileType.TURN, 0, 1);
 		x -= tmpSize;
-		y += tmpSize;
-		tiles[0][2] = new Tile(x, y, tmpSize, tmpSize, TileType.ERROR, 0, 2);
+		y += tmpSize*2;
+		Tile startTile = new Tile(x, y, tmpSize, tmpSize, TileType.START, 0, 2);
+		tiles[0][1] = startTile;
+		this.startTile = startTile;
 	}
 	
 	public Level(TileType tileTypeArr[][]){
@@ -72,6 +77,10 @@ public class Level {
 	
 	public void update(float dt, Input input){
 		
+		if(Constants.DEBUG){
+			handleDebugInput(input);
+		}
+		
 		//update all tiles
 		for(int i = 0; i < tiles.length; i++){
 			for(int j = 0; j < tiles[i].length; j++){
@@ -84,11 +93,41 @@ public class Level {
 		
 		checkConnections(startTile);
 	}
+	
+	//TODO: delete after deciding on interpolation type, used for debugging only
+	private String[] interpolationTypes = {"bounce", "bounceIn", "bounceOut", "circle", "circleIn", "circleOut", "elastic", "elasticIn", "elasticOut", "exp10", "exp10In", "exp10Out", "exp5", "exp5In", "exp5Out", "fade", "linear", "pow2", "pow2In", "pow2Out", "pow3", "pow3In", "pow3Out", "pow4", "pow4In", "pow4Out", "pow5", "pow5In", "pow5Out", "sine", "sineIn", "sineOut", "swing", "swingIn", "swingOut"};
+	private int selectedInterpolationIdx = -1;
+	
+	private void handleDebugInput(Input input) {
+		
+		if(Gdx.input.isKeyJustPressed(Keys.N) || Gdx.input.isKeyJustPressed(Keys.M)){
+			if(Gdx.input.isKeyJustPressed(Keys.N)){
+				selectedInterpolationIdx++;
+				if(selectedInterpolationIdx >= interpolationTypes.length)
+					selectedInterpolationIdx = 0; //wrap around
+				
+			}
+			if(Gdx.input.isKeyJustPressed(Keys.M)){
+				selectedInterpolationIdx--;
+				if(selectedInterpolationIdx  < 0)
+					selectedInterpolationIdx = interpolationTypes.length-1;
+			}
+			
+			String nextInterpolation = interpolationTypes[selectedInterpolationIdx];
+			Gdx.app.debug(TAG, "interpolation type: " + nextInterpolation);
+			for (int i = 0; i < tiles.length; i++) {
+				for (int j = 0; j < tiles[i].length; j++) {
+					tiles[i][j].setAngleTweenInterpolation(nextInterpolation);
+				}
+			}
+		}
+	}
 
 	public void randomize() {
 		for (int i = 0; i < tiles.length; i++) {
 			for (int j = 0; j < tiles[i].length; j++) {
-				tiles[i][j].setOrientation((int) Math.floor(Math.random()*4));
+				tiles[i][j].setOrientation(MathUtils.random(0,3));
+				//tiles[i][j].resetAngle();
 			}
 		}
 	}

@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.mazesolver.util.Helpers;
 import com.mazesolver.util.Input;
+import com.mazesolver.util.Tween;
 
 public class Tile {
 	enum TileType {
@@ -39,13 +40,14 @@ public class Tile {
 
 	private TileType type;
 	private int orientation;
-	float angle = 0f;
+	float angle;
 	
 	private boolean connected = false;
 	
 	private Color fillColor, borderColor, pathColor, connectedPathColor;
 	private float borderWidth;
 	private float pathWidth;
+	private Tween tweenAngle; // for smoother rotations
 
 	private Vector3 pos; //keep a reference to one, to avoid GC
 	private Rectangle collisionRect;
@@ -74,6 +76,7 @@ public class Tile {
 		connectedPathColor = Color.valueOf("#F0C51A2");
 		this.borderWidth = this.width / 10.0f;
 		this.pathWidth = this.width / 2.0f;
+		this.tweenAngle = new Tween(0.25f, "swing");
 		
 		initExits();
 		
@@ -87,15 +90,13 @@ public class Tile {
 	
 	/**direction; 1 is clockwise and -1 is counter clockwise*/
 	private void rotate(int direction){
-		Gdx.app.debug(TAG, "rotating, this.x: " + this.x + ", this.y: " + this.y);
+		//Gdx.app.debug(TAG, "rotating, this.x: " + this.x + ", this.y: " + this.y);
 		if (direction == 1 || direction == -1){
-			this.orientation = (this.orientation + direction + 4) % 4;
+			this.orientation = (this.orientation + (direction*-1) + 4) % 4;
+			//this.orientation = (this.orientation + direction) % 4;
 		} else{
 			throw new RuntimeException("Tile invalid direction");
 		}
-		Gdx.app.debug(TAG, "This.orientation: " + this.orientation);
-		Gdx.app.debug(TAG, "angle: " + angle);
-		
 	}
 	
 	
@@ -130,11 +131,9 @@ public class Tile {
 	 * rotate relative to the current tile rotation
 	 */
 	private void setupTransformationMatrix(ShapeRenderer renderer){
-		angle = (this.orientation % 4) * (270);
-		
 		renderer.identity();
 		renderer.translate(cx, cy, 0);
-		renderer.rotate(0, 0, 1, angle); //TODO delete angle and base on current orientation
+		renderer.rotate(0, 0, 1, angle); 
 		renderer.translate(-cx, -cy, 0);
 	}
 	
@@ -319,14 +318,33 @@ public class Tile {
 	
 	
 	public void update(float dt, Input input){
-
+		//angle = (this.orientation % 4) * (270);
+		angle = tweenAngle.update(dt);
+		//tween.update(dt);
 		if(this.clickedOn(input)){
-			this.rotate(1);
+			Gdx.app.debug(TAG, "===============================================================");
+			Gdx.app.debug(TAG, "This.orientation: " + this.orientation);
+			Gdx.app.debug(TAG, "angle: " + angle);
+			
+			int rotateDir = 1;
+			this.rotate(rotateDir);
+			float targetAngle = (rotateDir*90) + tweenAngle.getTargetValue();
+			tweenAngle.setTargetValue(targetAngle);
+			
+			Gdx.app.debug(TAG, "This.orientation: " + this.orientation);
+			Gdx.app.debug(TAG, "angle: " + angle);
+			Gdx.app.debug(TAG, "targetAngle: " + targetAngle);
+			Gdx.app.debug(TAG, "===============================================================");
+
 		}
 		
 		//if(Gdx.input.justTouched()){
 		//	this.rotate(1);
 		//}
+	}
+	
+	public void setAngleTweenInterpolation(String interpolationType){
+		this.tweenAngle.setInterPolation(interpolationType);
 	}
 	
 	//might switch to SpriteBatch if / when we make actual graphics for the game
@@ -378,6 +396,7 @@ public class Tile {
 
 	public void setOrientation(int orientation) {
 		this.orientation = orientation;
+		this.resetAngle();
 	}
 	
     public int getOrientation() {
@@ -406,4 +425,12 @@ public class Tile {
     	}
     	return false;
     }
+    
+    /** resets the angle based on current orientation */
+	public void resetAngle() {
+		//this.angle = (this.orientation % 4 + 4) * (90);
+		this.angle = this.orientation * 90*-1;
+		this.tweenAngle.setCurrentValue(this.angle);
+		this.tweenAngle.setTargetValue(this.angle);
+	}
 }

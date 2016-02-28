@@ -16,13 +16,13 @@ public class PlayScreen extends AbstractScreen {
 	private ShapeRenderer renderer;
 
 	/**used for debugging  */
-	/*public PlayScreen(MazeSolverMain game) {
+	public PlayScreen(MazeSolverMain game) {
 		super(game);
 		Gdx.app.debug(TAG, "switched to play screen");
 		
 		level = new Level();
 		renderer = new ShapeRenderer();
-	}*/
+	}
 	
 	public PlayScreen(MazeSolverMain game, Level level){
 		super(game);

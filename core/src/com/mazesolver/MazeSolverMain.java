@@ -30,11 +30,13 @@ public class MazeSolverMain extends Game {
 		//img = new Texture("badlogic.jpg");
 		
 		levelManager = new LevelManager();
+		
+		//setToScreen(new PlayScreen(this));
 		//Level nextLevel = levelManager.getNextLevel();
 		
 		setToScreen(new MainMenuScreen(this));
 		
-		//setToScreen(new PlayScreen(this, nextLevel));
+		//setToScreen(new PlayScreen(this, levelManager.getNextLevel()));
 		//setToScreen(new SubmitHighscoreScreen(this));
 		
 		//setToScreen(new BetweenLevelsScreen(this));
