@@ -44,7 +44,6 @@ public class Level {
 		for(int i = 0; i < tileTypeArr.length; i++){
 			for(int j = 0; j < tileTypeArr[i].length; j++){
 				float xPos = j*tileSize;
-				//float yPos = i*tileSize;
 				float yPos = tileTypeArr.length* tileSize - (i+1)*tileSize;
 				this.tiles[i][j] = new Tile(xPos, yPos, tileSize, tileSize, tileTypeArr[i][j], i, j);
 				
@@ -94,7 +93,7 @@ public class Level {
 		checkConnections(startTile);
 	}
 	
-	//TODO: delete after deciding on interpolation type, used for debugging only
+	//TODO: delete after deciding on interpolation type, used for debugging only.
 	private String[] interpolationTypes = {"bounce", "bounceIn", "bounceOut", "circle", "circleIn", "circleOut", "elastic", "elasticIn", "elasticOut", "exp10", "exp10In", "exp10Out", "exp5", "exp5In", "exp5Out", "fade", "linear", "pow2", "pow2In", "pow2Out", "pow3", "pow3In", "pow3Out", "pow4", "pow4In", "pow4Out", "pow5", "pow5In", "pow5Out", "sine", "sineIn", "sineOut", "swing", "swingIn", "swingOut"};
 	private int selectedInterpolationIdx = -1;
 	
@@ -127,7 +126,6 @@ public class Level {
 		for (int i = 0; i < tiles.length; i++) {
 			for (int j = 0; j < tiles[i].length; j++) {
 				tiles[i][j].setOrientation(MathUtils.random(0,3));
-				//tiles[i][j].resetAngle();
 			}
 		}
 	}

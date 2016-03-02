@@ -10,8 +10,6 @@ public class LevelManager {
 
 	public LevelManager(){
 		currentLevelIdx = -1;
-		
-		//currentLevel = 
 	}
 
 	public Level getNextLevel() {

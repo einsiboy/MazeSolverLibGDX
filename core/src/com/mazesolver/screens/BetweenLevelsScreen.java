@@ -33,8 +33,6 @@ public class BetweenLevelsScreen extends AbstractScreen {
 	
 	private void initStage(){
 		this.stage = new Stage();
-		//stage.setViewport(new StretchViewport(Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT, camera));
-		
 		Label title = Assets.instance.uiElements.getTitle();
 		
 		TextButton nextLevel = Assets.instance.uiElements.getPlayButton();
@@ -42,9 +40,6 @@ public class BetweenLevelsScreen extends AbstractScreen {
 		nextLevel.addListener(new ClickListener(){
 			@Override
 		    public void clicked(InputEvent event, float x, float y) {
-				//game.setScreen( new PlayScreen(game) );
-				//dispose();
-				//switchScreen(new PlayScreen(game));
 				Gdx.app.debug(TAG, "pressed next level button");
 				game.nextLevel();
 				dispose();
@@ -67,7 +62,6 @@ public class BetweenLevelsScreen extends AbstractScreen {
 	}
 	
 	private void draw(SpriteBatch batch){
-		//just temporary clear with blueish colour since no background is present yet
 	    Gdx.gl.glClearColor(0, 0, 0.2f, 1);
 	    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 	    

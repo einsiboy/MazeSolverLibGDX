@@ -14,43 +14,28 @@ import com.mazesolver.util.Assets;
 import com.mazesolver.util.Constants;
 
 public class MazeSolverMain extends Game {
-	//SpriteBatch batch;
-	//Texture img;
 	
 	private LevelManager levelManager;
 	
 	@Override
 	public void create () {
+		// messages logged with Gdx.app.debug(tag, message) will only be output
+		// if log level is set to LOG_DEBUG
 		if(Constants.DEBUG){
 			Gdx.app.setLogLevel(Application.LOG_DEBUG);
 		}
-		Gdx.app.log("tag", "log message");
-		
-		//batch = new SpriteBatch();
-		//img = new Texture("badlogic.jpg");
 		
 		levelManager = new LevelManager();
 		
-		//setToScreen(new PlayScreen(this));
-		//Level nextLevel = levelManager.getNextLevel();
-		
-		setToScreen(new MainMenuScreen(this));
-		
-		//setToScreen(new PlayScreen(this, levelManager.getNextLevel()));
-		//setToScreen(new SubmitHighscoreScreen(this));
-		
-		//setToScreen(new BetweenLevelsScreen(this));
-		Gdx.app.debug("temp", "in main");
+		setScreen(new MainMenuScreen(this));
+		//setScreen(new PlayScreen(this, levelManager.getNextLevel()));
+		//setScreen(new SubmitHighscoreScreen(this));
+		//setScreen(new BetweenLevelsScreen(this));
 	}
 
 	@Override
 	public void render () {
 		super.render();
-		/*Gdx.gl.glClearColor(1, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		batch.begin();
-		batch.draw(img, 0, 0);
-		batch.end();*/
 	}
 	
 	@Override
@@ -58,20 +43,16 @@ public class MazeSolverMain extends Game {
 		Assets.instance.dispose();
 	}
 	
-	public void setToScreen(AbstractScreen screen){
-		setScreen(screen);
-	}
-	
 	public void nextLevel(){
 		Level nextLevel = levelManager.getNextLevel();
-		setToScreen(new PlayScreen(this, nextLevel));
+		setScreen(new PlayScreen(this, nextLevel));
 	}
 	
 	public void handleLevelComplete() {
 		if(levelManager.allLevelsCompleted()){
-			setToScreen(new SubmitHighscoreScreen(this));
+			setScreen(new SubmitHighscoreScreen(this));
 		} else {
-			setToScreen(new BetweenLevelsScreen(this));
+			setScreen(new BetweenLevelsScreen(this));
 		}
 	}
 }

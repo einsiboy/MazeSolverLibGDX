@@ -14,12 +14,10 @@ import com.mazesolver.util.Tween;
 
 public class Tile {
 	enum TileType {
-		//Note logic in Level class does not yet support cross type
 		STRAIGHT, TURN, T_SECTION, CROSS, START, END, EMPTY, ERROR; //TODO: just remove the error type
 	}
 	
 	public static class Exits{
-		//public static final Exits instance = new Exits();
 		public static Hashtable<TileType, int[]> exits = new Hashtable<TileType, int[]>() 
 		{{
 			put(TileType.TURN, new int[]{0,1});
@@ -49,7 +47,7 @@ public class Tile {
 	private float pathWidth;
 	private Tween tweenAngle; // for smoother rotations
 
-	private Vector3 pos; //keep a reference to one, to avoid GC
+	private Vector3 pos; //keep a reference to one, to avoid GC (instead of creating a new one each frame)
 	private Rectangle collisionRect;
 	
 	int[] exits;
@@ -318,29 +316,13 @@ public class Tile {
 	
 	
 	public void update(float dt, Input input){
-		//angle = (this.orientation % 4) * (270);
 		angle = tweenAngle.update(dt);
-		//tween.update(dt);
 		if(this.clickedOn(input)){
-			Gdx.app.debug(TAG, "===============================================================");
-			Gdx.app.debug(TAG, "This.orientation: " + this.orientation);
-			Gdx.app.debug(TAG, "angle: " + angle);
-			
 			int rotateDir = 1;
 			this.rotate(rotateDir);
 			float targetAngle = (rotateDir*90) + tweenAngle.getTargetValue();
 			tweenAngle.setTargetValue(targetAngle);
-			
-			Gdx.app.debug(TAG, "This.orientation: " + this.orientation);
-			Gdx.app.debug(TAG, "angle: " + angle);
-			Gdx.app.debug(TAG, "targetAngle: " + targetAngle);
-			Gdx.app.debug(TAG, "===============================================================");
-
 		}
-		
-		//if(Gdx.input.justTouched()){
-		//	this.rotate(1);
-		//}
 	}
 	
 	public void setAngleTweenInterpolation(String interpolationType){

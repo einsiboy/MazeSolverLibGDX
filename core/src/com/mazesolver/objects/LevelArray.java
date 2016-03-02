@@ -34,7 +34,7 @@ public final class LevelArray {
 	        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 	    },
 		
-	    {
+	    { //another easy test level
 	        {0, 0, 0, 0, 0, 5, 0, 0, 0, 0},
 	        {0, 1, 1, 1, 2, 3, 2, 1, 1, 0},
 	        {0, 1, 1, 1, 1, 3, 1, 1, 1, 0}, //3
@@ -47,7 +47,7 @@ public final class LevelArray {
 	        {0, 0, 0, 6, 0, 3, 0, 0, 0, 0}
 	    },
 		
-		/*{ // LEVEL 1 -- Bjarna borð
+		/*{ // LEVEL 1 -- Bjarna borð, commented out while developing screen transitions, just to hard.
 	          {2, 1, 1, 1, 2, 5, 2, 6, 6, 0},
 	          {1, 2, 1, 2, 2, 3, 2, 2, 3, 2},
 	          {1, 1, 0, 2, 2, 2, 1, 3, 2, 1}, //3
