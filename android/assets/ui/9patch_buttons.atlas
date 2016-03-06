@@ -1,0 +1,132 @@
+
+9patch_buttons.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+default
+  rotate: false
+  xy: 1, 71
+  size: 256, 128
+  orig: 256, 128
+  offset: 0, 0
+  index: -1
+1_down
+  rotate: false
+  xy: 1, 1
+  size: 68, 68
+  split: 5, 5, 5, 5
+  orig: 68, 68
+  offset: 0, 0
+  index: -1
+1_up
+  rotate: false
+  xy: 259, 131
+  size: 68, 68
+  split: 5, 5, 5, 5
+  orig: 68, 68
+  offset: 0, 0
+  index: -1
+1_up_alt
+  rotate: false
+  xy: 71, 1
+  size: 68, 68
+  split: 5, 5, 5, 5
+  orig: 68, 68
+  offset: 0, 0
+  index: -1
+2_down
+  rotate: false
+  xy: 329, 131
+  size: 68, 68
+  split: 5, 5, 5, 5
+  orig: 68, 68
+  offset: 0, 0
+  index: -1
+2_up
+  rotate: false
+  xy: 141, 1
+  size: 68, 68
+  split: 5, 5, 5, 5
+  orig: 68, 68
+  offset: 0, 0
+  index: -1
+2_up_alt
+  rotate: false
+  xy: 399, 131
+  size: 68, 68
+  split: 5, 5, 5, 5
+  orig: 68, 68
+  offset: 0, 0
+  index: -1
+3_down
+  rotate: false
+  xy: 469, 131
+  size: 68, 68
+  split: 5, 5, 5, 5
+  orig: 68, 68
+  offset: 0, 0
+  index: -1
+3_up
+  rotate: false
+  xy: 539, 131
+  size: 68, 68
+  split: 5, 5, 5, 5
+  orig: 68, 68
+  offset: 0, 0
+  index: -1
+3_up_alt
+  rotate: false
+  xy: 609, 131
+  size: 68, 68
+  split: 5, 5, 5, 5
+  orig: 68, 68
+  offset: 0, 0
+  index: -1
+4_down
+  rotate: false
+  xy: 679, 131
+  size: 68, 68
+  split: 5, 5, 5, 5
+  orig: 68, 68
+  offset: 0, 0
+  index: -1
+4_up
+  rotate: false
+  xy: 749, 131
+  size: 68, 68
+  split: 5, 5, 5, 5
+  orig: 68, 68
+  offset: 0, 0
+  index: -1
+4_up_alt
+  rotate: false
+  xy: 819, 131
+  size: 68, 68
+  split: 5, 5, 5, 5
+  orig: 68, 68
+  offset: 0, 0
+  index: -1
+5_down
+  rotate: false
+  xy: 889, 131
+  size: 68, 68
+  split: 5, 5, 5, 5
+  orig: 68, 68
+  offset: 0, 0
+  index: -1
+5_up
+  rotate: false
+  xy: 259, 61
+  size: 68, 68
+  split: 5, 5, 5, 5
+  orig: 68, 68
+  offset: 0, 0
+  index: -1
+5_up_alt
+  rotate: false
+  xy: 329, 61
+  size: 68, 68
+  split: 5, 5, 5, 5
+  orig: 68, 68
+  offset: 0, 0
+  index: -1

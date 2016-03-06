@@ -1,24 +1,16 @@
 package com.mazesolver.screens;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Pixmap.Format;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.mazesolver.MazeSolverMain;
 import com.mazesolver.util.Assets;
 import com.mazesolver.util.Constants;
@@ -28,8 +20,13 @@ public class MainMenuScreen extends AbstractScreen {
 
 	
 	private SpriteBatch batch;
-	private Stage stage;
 	private Sprite background;
+
+	
+	private Stage stage;
+	private Table table;
+	
+	
 
 	
 	public MainMenuScreen(MazeSolverMain game) {
@@ -43,10 +40,24 @@ public class MainMenuScreen extends AbstractScreen {
 	
 	private void initStage(){
 		this.stage = new Stage();
+		this.table = new Table();
+		table.setFillParent(true);
+		stage.addActor(table);
 		
-		Label title = Assets.instance.uiElements.getTitle();
+		//Label title = Assets.instance.uiElements.getTitle();
+		Label title = Assets.instance.uiElements.getLemonMilkLabel("Mazesolver", 36, Color.RED);
+		title.setPosition(Gdx.graphics.getWidth()/2 - title.getWidth()/2, 
+				Gdx.graphics.getHeight()/2 +  Gdx.graphics.getHeight()*0.1f);
 		
-		TextButton playButton = Assets.instance.uiElements.getPlayButton();
+		//Label testLabel = Assets.instance.uiElements.getDefaultUILabel("test label");
+		//testLabel.getStyle().font = Assets.instance.fonts.getLemonMilk();
+		
+		TextButton playButton = Assets.instance.uiElements.get9PatchButton("Play game!");
+		playButton.setWidth(playButton.getWidth()*1.5f);
+		playButton.setX(stage.getCamera().viewportWidth/2 - playButton.getWidth()/2);
+		
+		//btn9patch.setPosition(200, 150);
+		
 		playButton.addListener(new ClickListener(){
 			@Override
 		    public void clicked(InputEvent event, float x, float y) {
@@ -56,8 +67,8 @@ public class MainMenuScreen extends AbstractScreen {
 		});
 		
 		//add all actors (ui elements)
-		stage.addActor(title);
-		stage.addActor(playButton);
+		table.addActor(title);
+		table.addActor(playButton);
 	}
 	
 	
@@ -99,6 +110,7 @@ public class MainMenuScreen extends AbstractScreen {
 	public void resize(int width, int height) {
 		camera.viewportHeight = (Constants.WORLD_WIDTH / width) * height;
 		camera.update();
+		stage.getViewport().update(width, height, true);
 		
 		//stage.setViewport(new StretchViewport(camera.viewportWidth, camera.viewportHeight, camera));
 		//stage.getViewport().update((int)camera.viewportWidth, (int)camera.viewportHeight, true);

@@ -2,6 +2,7 @@ package com.mazesolver.screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -33,10 +34,15 @@ public class BetweenLevelsScreen extends AbstractScreen {
 	
 	private void initStage(){
 		this.stage = new Stage();
-		Label title = Assets.instance.uiElements.getTitle();
 		
-		TextButton nextLevel = Assets.instance.uiElements.getPlayButton();
-		nextLevel.setText("Next Level Please!");
+		Label title = Assets.instance.uiElements.getLemonMilkLabel("Mazesolver", 36, Color.RED);
+		title.setPosition(Gdx.graphics.getWidth()/2 - title.getWidth()/2, 
+				Gdx.graphics.getHeight()/2 +  Gdx.graphics.getHeight()*0.1f);
+		
+		TextButton nextLevel = Assets.instance.uiElements.get9PatchButton("Next level");
+		nextLevel.setWidth(nextLevel.getWidth()*1.5f);
+		nextLevel.setX(stage.getCamera().viewportWidth/2 - nextLevel.getWidth()/2);
+		
 		nextLevel.addListener(new ClickListener(){
 			@Override
 		    public void clicked(InputEvent event, float x, float y) {
@@ -85,7 +91,8 @@ public class BetweenLevelsScreen extends AbstractScreen {
 	@Override
 	public void resize(int width, int height) {
 		camera.viewportHeight = (Constants.WORLD_WIDTH / width) * height;
-		camera.update();		
+		camera.update();	
+		stage.getViewport().update(width, height, true);
 	}
 
 	@Override

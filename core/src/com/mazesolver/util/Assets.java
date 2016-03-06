@@ -9,11 +9,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 
 /**
@@ -22,16 +23,36 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
  * fyrir allt loading
  */
 public class Assets {
+	//Constatnts
 	public static final String TAG = Assets.class.getName();
+	public static final String ATLAS_UI = "ui_starterpack/uiskin.atlas";
+	public static final String SKIN_UI = "ui_starterpack/uiskin.json";
+	public static final String ATLAS_UI_BUTTONS = "ui/9patch_buttons.atlas";
+	public static final String SKIN_UI_BUTTONS = "ui/9patch_buttons.json";
+
+	
 
 	public static final Assets instance = new Assets();
 	
+	/*private AssetManager assetManager;
+	public AssetFonts fonts;
+	public AssetBackground background;
+	public AssetPlayer player;
+	public AssetEnemy enemy;
+	public AssetBoundary boundary;*/
+	
 	private AssetManager assetManager;
+	private Skin skinUI;
+	private Skin skinButton;
+	private TextureAtlas textureAtlasUI;
+	private TextureAtlas textureAtlasButtons;
 	
 	//Background
 	private Texture textureBackground;
 	public Sprite spriteBackground;
+	
 	public UIElements uiElements;
+	public Fonts fonts;
 
 	
 	
@@ -39,18 +60,81 @@ public class Assets {
 	private Assets(){
 		//this.assetManager = new AssetManager(); will be used for loading graphics
 		this.uiElements = new UIElements();
-
+		this.fonts = new Fonts();
 		
+		//Background
 		textureBackground = new Texture(Gdx.files.internal("images/hedgemaze_alltiles.jpg"));
 		spriteBackground = new Sprite(textureBackground);
 		spriteBackground.setSize(Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT);
+		
+		this.assetManager = new AssetManager();
+		init();
+	}
+	
+	public void init(){
+		assetManager.load(ATLAS_UI, TextureAtlas.class);
+		assetManager.load(SKIN_UI, Skin.class);
+		
+		assetManager.load(ATLAS_UI_BUTTONS, TextureAtlas.class);
+		assetManager.load(SKIN_UI_BUTTONS, Skin.class);
+		//TODO: load game graphics atlas here
+		assetManager.finishLoading();
+		
+		skinUI = assetManager.get(SKIN_UI);
+		textureAtlasUI = assetManager.get(ATLAS_UI);
+		skinButton = assetManager.get(SKIN_UI_BUTTONS, Skin.class);
+		textureAtlasButtons = assetManager.get(ATLAS_UI_BUTTONS, TextureAtlas.class);
+		
+		//this.assetManager = assetManager;
+		
+		//assetManager.load(Constants.ATLAS_GAME, TextureAtlas.class);
+		//assetManager.finishLoading();
+		//TextureAtlas atlas = assetManager.get(Constants.ATLAS_GAME);
+		
+		//initAssets(atlas);
+	}
+	
+	
+	/**
+	 * Initialize assets in the atlas, implementations will vary
+	 * @param atlas the TextureAtlas with all images for this game
+	 */
+	private void initAssets(TextureAtlas atlas){
+		/*background = new AssetBackground(atlas);
+		player = new AssetPlayer(atlas);
+		enemy = new AssetEnemy(atlas);
+		boundary = new AssetBoundary(atlas);*/
+	}
+	
+	public void dispose(){
+		textureBackground.dispose();
+		assetManager.clear();
+		assetManager.dispose();
+		fonts.dispose();
+		uiElements.dispose();
+		//fonts.dispose();
 	}
 	
 	
 	
-	public void dispose(){
-		//assetManager.dispose();
-		textureBackground.dispose();
+	public class Fonts {
+		
+		public Fonts(){
+		}
+		
+		public BitmapFont getLemonMilk(int size){
+			FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/LemonMilk.ttf"));
+			FreeTypeFontParameter parameter = new FreeTypeFontParameter();
+			parameter.size = size;
+			BitmapFont lemonMilk = generator.generateFont(parameter);
+			generator.dispose();
+			
+			return lemonMilk;
+		}
+		
+		public void dispose(){
+			
+		}
 	}
 	
 	
@@ -107,10 +191,106 @@ public class Assets {
 			return title;
 		}
 		
+		public Label getDefaultUILabel(String labelText){
+			return new Label(labelText, skinUI);
+		}
+		
+		public Label getLemonMilkLabel(String labelText, int size, Color color){
+			LabelStyle style = new LabelStyle(fonts.getLemonMilk(size), color);
+			return new Label(labelText, style);
+		}
+		
+		public TextButton getDefaultUITextButton(String buttonText){
+			return new TextButton(buttonText, skinUI);
+		}
+		
+		public TextButton get9PatchButton(String buttonText){
+			TextButton btn = new TextButton(buttonText, skinButton);
+			btn.setHeight(btn.getHeight()*0.75f);
+			
+			btn.setX(Gdx.graphics.getWidth()/2 - btn.getWidth()/2);
+			btn.setY(Gdx.graphics.getHeight() / 2);
+			
+			return btn;
+		}
+		
 		public void dispose(){
 			this.skin.dispose();
 			this.playBtnPixmap.dispose();
 		}
 	}
 	
+	/*
+	
+	////////////////////////////////////////////////
+	/////// Helper asset classes for grouping //////
+	////////////////////////////////////////////////
+	
+	public class AssetFonts{
+		//add custom fonts and load if desired
+		
+		//public final BitmapFont neonGlow;
+		public final BitmapFont neonLike;
+		
+		public AssetFonts(){
+			
+			neonLike = new BitmapFont(Gdx.files.internal("fonts/neonLike.fnt"));
+			
+			/* Use the FreeTypeFontGenerator for quickly testing fonts with various settings on desktop
+			 * It can provide some problems on android devices, so just use bitmap fonts with predetermined settings
+			FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/neonlights.ttf"));
+			FreeTypeFontParameter parameter = new FreeTypeFontParameter();
+			parameter.size = 36;
+			parameter.minFilter = TextureFilter.Linear;
+			parameter.magFilter = TextureFilter.Linear;
+			
+			FreeTypeFontGenerator veselka4FGen = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Veselka4F.ttf"));
+			veselka4F = veselka4FGen.generateFont(parameter);
+			
+			generator.dispose(); // don't forget to dispose to avoid memory leaks!
+			
+			veselka4F.getRegion().getTexture().setFilter(
+					TextureFilter.Linear, TextureFilter.Linear);*/
+			
+		/*}
+		
+		public void dispose(){
+			neonLike.dispose();
+		}
+	}
+	
+	public class AssetBackground{
+		public final Sprite background;
+		
+		public AssetBackground(TextureAtlas atlas){
+			background = UtilFunctions.spriteFromRegion(atlas.findRegion("background"));
+			background.setSize(Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT);
+		}
+		
+	}
+	
+	public class AssetPlayer{
+		public final Sprite circlePlayer;
+		
+		public AssetPlayer(TextureAtlas atlas){
+			circlePlayer = UtilFunctions.spriteFromRegion(atlas.findRegion("player"));
+		}
+	}
+	
+	public class AssetEnemy{
+		public final Sprite circleEnemy;
+		
+		public AssetEnemy(TextureAtlas atlas){
+			circleEnemy = UtilFunctions.spriteFromRegion(atlas.findRegion("enemy115px"));
+		}
+	}
+
+	public class AssetBoundary{
+		public final Sprite circleBoundary;
+		
+		public AssetBoundary(TextureAtlas atlas){
+			circleBoundary = UtilFunctions.spriteFromRegion(atlas.findRegion("boundary"));
+		}
+	}
+	*/
 }
