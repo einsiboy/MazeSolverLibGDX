@@ -28,8 +28,8 @@ public class MazeSolverMain extends Game {
 		levelManager = new LevelManager();
 		
 		//setScreen(new MainMenuScreen(this));
-		//setScreen(new PlayScreen(this, levelManager.getNextLevel()));
-		setScreen(new SubmitHighscoreScreen(this));
+		setScreen(new PlayScreen(this, levelManager.getNextLevel()));
+		//setScreen(new SubmitHighscoreScreen(this));
 		//setScreen(new BetweenLevelsScreen(this));
 	}
 

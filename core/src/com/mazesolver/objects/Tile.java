@@ -41,6 +41,7 @@ public class Tile {
 	float angle;
 	
 	private boolean connected = false;
+	private boolean rotateable = true;
 	
 	private Color fillColor, borderColor, pathColor, connectedPathColor;
 	private float borderWidth;
@@ -80,6 +81,9 @@ public class Tile {
 		
 		if(this.type == TileType.START){
 			this.connected = true;
+		}
+		if(this.type == TileType.EMPTY || this.type == TileType.ERROR){
+			this.rotateable = false;
 		}
 	}
 	private void initExits(){
@@ -263,9 +267,17 @@ public class Tile {
 		renderer.begin(ShapeType.Filled);
 		renderer.setColor(this.fillColor);
 		renderer.rect(x, y, width, height);
-		renderer.setColor(Helpers.colorLuminance(this.fillColor, -0.2f));
+		Color tmpCol = Helpers.colorLuminance(this.fillColor, -0.2f);
+		for(int i = 1; i <= 5; i++){
+			renderer.setColor(tmpCol);
+			tmpCol = Helpers.colorLuminance(tmpCol, -0.12f);
+			float offset = this.width * 0.1f*i;
+			renderer.rect(x + offset, y + offset, width - offset*2, height - offset*2);
+		}
+		
+		/*renderer.setColor(Helpers.colorLuminance(this.fillColor, -0.2f));
 		float offset = this.width * 0.1f;
-		renderer.rect(x + offset, y + offset, width - offset*2, height - offset*2);
+		renderer.rect(x + offset, y + offset, width - offset*2, height - offset*2);*/
 		
 		renderer.end();
 		
@@ -317,7 +329,7 @@ public class Tile {
 	
 	public void update(float dt, Input input){
 		angle = tweenAngle.update(dt);
-		if(this.clickedOn(input)){
+		if(this.clickedOn(input) && this.rotateable){
 			int rotateDir = 1;
 			this.rotate(rotateDir);
 			float targetAngle = (rotateDir*90) + tweenAngle.getTargetValue();
