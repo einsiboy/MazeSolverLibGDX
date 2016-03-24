@@ -12,10 +12,18 @@ import com.mazesolver.screens.PlayScreen;
 import com.mazesolver.screens.SubmitHighscoreScreen;
 import com.mazesolver.util.Assets;
 import com.mazesolver.util.Constants;
+import com.mazesolver.util.IPlayServices;
 
 public class MazeSolverMain extends Game {
 	
 	private LevelManager levelManager;
+	public static IPlayServices playServices;
+
+
+	public MazeSolverMain(IPlayServices playServices)
+	{
+		this.playServices = playServices;
+	}
 	
 	@Override
 	public void create () {
@@ -27,8 +35,8 @@ public class MazeSolverMain extends Game {
 		
 		levelManager = new LevelManager();
 		
-		//setScreen(new MainMenuScreen(this));
-		setScreen(new PlayScreen(this, levelManager.getNextLevel()));
+		setScreen(new MainMenuScreen(this));
+		//setScreen(new PlayScreen(this, levelManager.getNextLevel()));
 		//setScreen(new SubmitHighscoreScreen(this));
 		//setScreen(new BetweenLevelsScreen(this));
 	}

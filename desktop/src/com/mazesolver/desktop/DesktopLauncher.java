@@ -21,6 +21,6 @@ public class DesktopLauncher {
 		//config.height = 320;
 		
 		
-		new LwjglApplication(new MazeSolverMain(), config);
+		new LwjglApplication(new MazeSolverMain(new DesktopGooglePlayServices()), config);
 	}
 }
