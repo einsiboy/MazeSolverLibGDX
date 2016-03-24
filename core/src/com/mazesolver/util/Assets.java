@@ -18,8 +18,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 
 /**
- * Assets klasinn sér um að loada öllum assets og búa til sprites
- * til að hafa auðvelt aðgengi allstaðar að sprites, og einn staður
+ * Assets klasinn ser um ad loada ollum assets og bua til sprites
+ * til ad hafa audvelt adgengi allstadar ad sprites, og einn staur
  * fyrir allt loading
  */
 public class Assets {
