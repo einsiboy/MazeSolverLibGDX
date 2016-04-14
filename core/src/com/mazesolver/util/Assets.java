@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 
 /**
  * Assets klasinn ser um ad loada ollum assets og bua til sprites
@@ -76,15 +77,22 @@ public class Assets {
 		assetManager.load(SKIN_UI, Skin.class);
 		
 		assetManager.load(ATLAS_UI_BUTTONS, TextureAtlas.class);
-		assetManager.load(SKIN_UI_BUTTONS, Skin.class);
+		//assetManager.load(SKIN_UI_BUTTONS, Skin.class);
 		//TODO: load game graphics atlas here
 		assetManager.finishLoading();
 		
 		skinUI = assetManager.get(SKIN_UI);
 		textureAtlasUI = assetManager.get(ATLAS_UI);
-		skinButton = assetManager.get(SKIN_UI_BUTTONS, Skin.class);
+
+
 		textureAtlasButtons = assetManager.get(ATLAS_UI_BUTTONS, TextureAtlas.class);
-		
+
+		//Stopped loading the skinButton skin in the Assetmanager to generate font size on the fly
+		skinButton = new Skin();
+		skinButton.add("default-font", this.fonts.getLemonMilk(Helpers.getFontSize(20, 720.0f, Gdx.graphics.getHeight())));
+		skinButton.addRegions(new TextureAtlas(Gdx.files.internal("ui/9patch_buttons.atlas")));
+		skinButton.load(Gdx.files.internal("ui/9patch_buttons.json"));
+
 		//this.assetManager = assetManager;
 		
 		//assetManager.load(Constants.ATLAS_GAME, TextureAtlas.class);
@@ -205,7 +213,9 @@ public class Assets {
 		}
 		
 		public TextButton get9PatchButton(String buttonText){
+			//Drawable tmpDrawable = skinButton.newDrawable(skinButton.getDrawable("default"));
 			TextButton btn = new TextButton(buttonText, skinButton);
+			//TextButton btn = new TextButton(buttonText, tmpDrawable);
 			btn.setHeight(btn.getHeight()*0.75f);
 			
 			btn.setX(Gdx.graphics.getWidth()/2 - btn.getWidth()/2);

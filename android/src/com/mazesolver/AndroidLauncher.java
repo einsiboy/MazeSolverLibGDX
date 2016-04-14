@@ -21,6 +21,7 @@ public class AndroidLauncher extends AndroidApplication implements IPlayServices
 	@Override
 	protected void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setLogLevel(LOG_DEBUG);
 
 		gameHelper = new GameHelper(this, GameHelper.CLIENT_GAMES);
 		gameHelper.enableDebugLog(false);
@@ -107,11 +108,13 @@ public class AndroidLauncher extends AndroidApplication implements IPlayServices
 
 	@Override
 	public void submitScore(int highScore) {
-		Gdx.app.debug(TAG, "android attemting google play services submit score");
+		Gdx.app.log(TAG, "android attemting google play services submit score");
 
-		if (isSignedIn() == true) {
+		if (isSignedIn()) {
+			Gdx.app.log(TAG, "submitting");
 			Games.Leaderboards.submitScore(gameHelper.getApiClient(),
 					getString(R.string.leaderboard_all_time_highscore), highScore);
+			Gdx.app.log(TAG, "done submitting");
 		}
 	}
 
@@ -141,7 +144,8 @@ public class AndroidLauncher extends AndroidApplication implements IPlayServices
 
 	@Override
 	public boolean isSignedIn() {
-		Gdx.app.debug(TAG, "android getting signed in status: " + gameHelper.isSignedIn());
+		Gdx.app.log(TAG, "getting sign in status");
+		Gdx.app.log(TAG, "android getting signed in status: " + gameHelper.isSignedIn());
 		return gameHelper.isSignedIn();
 	}
 }

@@ -3,6 +3,7 @@ package com.mazesolver;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.MathUtils;
 import com.mazesolver.objects.Level;
 import com.mazesolver.objects.LevelManager;
 import com.mazesolver.screens.AbstractScreen;
@@ -55,12 +56,25 @@ public class MazeSolverMain extends Game {
 		Level nextLevel = levelManager.getNextLevel();
 		setScreen(new PlayScreen(this, nextLevel));
 	}
+
+	public int calculateHighScore(){
+		return MathUtils.random(1,1000);
+	}
 	
 	public void handleLevelComplete() {
+		int highScore = this.calculateHighScore();
 		if(levelManager.allLevelsCompleted()){
-			setScreen(new SubmitHighscoreScreen(this));
+			setScreen(new SubmitHighscoreScreen(this, highScore));
 		} else {
 			setScreen(new BetweenLevelsScreen(this));
 		}
+	}
+
+	public void submitHighScore(int highScore) {
+		playServices.submitScore(highScore);
+	}
+
+	public void showScore(){
+		playServices.showScore();
 	}
 }

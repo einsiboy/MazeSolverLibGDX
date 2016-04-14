@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mazesolver.MazeSolverMain;
 import com.mazesolver.util.Assets;
 import com.mazesolver.util.Constants;
+import com.mazesolver.util.Helpers;
 
 public class MainMenuScreen extends AbstractScreen {
 	public static final String TAG = MainMenuScreen.class.getName();
@@ -45,7 +46,9 @@ public class MainMenuScreen extends AbstractScreen {
 		stage.addActor(table);
 		
 		//Label title = Assets.instance.uiElements.getTitle();
-		Label title = Assets.instance.uiElements.getLemonMilkLabel("Mazesolver", 36, Color.RED);
+		int titleFontSize = Helpers.getTitleFontSize(stage.getCamera().viewportHeight);
+		Gdx.app.debug(TAG, "title font size: " + titleFontSize);
+		Label title = Assets.instance.uiElements.getLemonMilkLabel("Mazesolver", titleFontSize, Color.RED);
 		title.setPosition(Gdx.graphics.getWidth()/2 - title.getWidth()/2, 
 				Gdx.graphics.getHeight()/2 +  Gdx.graphics.getHeight()*0.1f);
 		
@@ -54,16 +57,19 @@ public class MainMenuScreen extends AbstractScreen {
 		
 		TextButton playButton = Assets.instance.uiElements.get9PatchButton("Play game!");
 		playButton.setWidth(playButton.getWidth()*1.5f);
-		playButton.setX(stage.getCamera().viewportWidth/2 - playButton.getWidth()/2);
+		playButton.setX(stage.getCamera().viewportWidth / 2 - playButton.getWidth() / 2);
+
+		Gdx.app.debug(TAG, "play button width: " + playButton.getWidth());
+		Gdx.app.debug(TAG, "camera width: " + camera.viewportWidth);
 		
-		//btn9patch.setPosition(200, 150);
-		
-		playButton.addListener(new ClickListener(){
+		playButton.addListener(new ClickListener() {
 			@Override
-		    public void clicked(InputEvent event, float x, float y) {
+			public void clicked(InputEvent event, float x, float y) {
 				game.nextLevel();
 				dispose();
-		    };
+			}
+
+			;
 		});
 		
 		//add all actors (ui elements)

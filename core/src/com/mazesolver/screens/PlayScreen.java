@@ -18,7 +18,7 @@ public class PlayScreen extends AbstractScreen {
 	private ShapeRenderer renderer;
 	
 	private boolean shouldUpdate = true;
-	private float fadeOutTime = 1;
+	private float fadeOutTime = 0.6f;
 
 	/**used for debugging  */
 	public PlayScreen(MazeSolverMain game) {

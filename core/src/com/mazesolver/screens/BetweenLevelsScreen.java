@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mazesolver.MazeSolverMain;
 import com.mazesolver.util.Assets;
 import com.mazesolver.util.Constants;
+import com.mazesolver.util.Helpers;
 
 public class BetweenLevelsScreen extends AbstractScreen {
 	public static final String TAG = BetweenLevelsScreen.class.getName();
@@ -34,8 +35,9 @@ public class BetweenLevelsScreen extends AbstractScreen {
 	
 	private void initStage(){
 		this.stage = new Stage();
-		
-		Label title = Assets.instance.uiElements.getLemonMilkLabel("Mazesolver", 36, Color.RED);
+
+		int titleFontSize = Helpers.getTitleFontSize(stage.getCamera().viewportHeight);
+		Label title = Assets.instance.uiElements.getLemonMilkLabel("Mazesolver", titleFontSize, Color.RED);
 		title.setPosition(Gdx.graphics.getWidth()/2 - title.getWidth()/2, 
 				Gdx.graphics.getHeight()/2 +  Gdx.graphics.getHeight()*0.1f);
 		

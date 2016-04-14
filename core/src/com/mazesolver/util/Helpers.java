@@ -6,6 +6,14 @@ import com.badlogic.gdx.math.MathUtils;
 /** class for various helper functions */
 public class Helpers {
 
+	public static int getTitleFontSize(float cameraHeight){
+		return getFontSize(36, 720, cameraHeight);
+	}
+
+	public static int getFontSize(int referenceFontSize, float referenceScreenHeight, float cameraHeight){
+		return (int) (referenceFontSize/referenceScreenHeight *  cameraHeight);
+	}
+
 
 	public static Color colorLuminance(Color color, float lum){
 		/** returns the same color with luminance applied

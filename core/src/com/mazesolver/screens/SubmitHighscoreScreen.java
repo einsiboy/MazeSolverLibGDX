@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mazesolver.MazeSolverMain;
 import com.mazesolver.util.Assets;
 import com.mazesolver.util.Constants;
+import com.mazesolver.util.Helpers;
 
 public class SubmitHighscoreScreen extends AbstractScreen {
 	public static final String TAG = SubmitHighscoreScreen.class.getName();
@@ -22,10 +23,19 @@ public class SubmitHighscoreScreen extends AbstractScreen {
 	private Stage stage;
 	private Sprite background;
 
+	private int highScore;
+	private boolean highScoreSubmitted = false;
+
+	//** just for debugging from MazeSolverMain */
 	public SubmitHighscoreScreen(MazeSolverMain game) {
+		this(game, MathUtils.random(1, 1000));
+	}
+
+	public SubmitHighscoreScreen(MazeSolverMain game, int highScore) {
 		super(game);
 		Gdx.app.debug(TAG, "in SubitHighscoreScreen");
-		
+		this.highScore = highScore;
+
 		this.batch = new SpriteBatch();
 		this.background = Assets.instance.spriteBackground;
 		initStage();
@@ -37,35 +47,59 @@ public class SubmitHighscoreScreen extends AbstractScreen {
 		float stageWidth = stage.getCamera().viewportWidth;
 		float stageHeight = stage.getCamera().viewportHeight;
 		
-		String scoreText = "score: " + MathUtils.random()*100; 
+		String scoreText = "score: " + this.highScore;
 		
-		Label score = Assets.instance.uiElements.getDefaultUILabel(scoreText);
+		//Label score = Assets.instance.uiElements.getDefaultUILabel(scoreText);
+		int scoreFontSize = Helpers.getFontSize(16, 720, stage.getCamera().viewportHeight);
+		Label score = Assets.instance.uiElements.getLemonMilkLabel(scoreText, scoreFontSize, Color.RED);
 		score.setColor(Color.RED);
-		score.setX(stageWidth/2 - score.getWidth()/2);
-		score.setY(stageHeight/2 + stageHeight*0.03f);
-		
-		
-		Label title = Assets.instance.uiElements.getLemonMilkLabel("Mazesolver", 36, Color.RED);
-		title.setPosition(stageWidth/2 - title.getWidth()/2, 
-				stageHeight/2 +  stageHeight*0.1f);
+		score.setX(stageWidth / 2 - score.getWidth() / 2);
+		score.setY(stageHeight / 2 + stageHeight * 0.03f);
+
+		int titleFontSize = Helpers.getTitleFontSize(stage.getCamera().viewportHeight);
+		Label title = Assets.instance.uiElements.getLemonMilkLabel("Mazesolver", titleFontSize, Color.RED);
+		title.setPosition(stageWidth / 2 - title.getWidth() / 2,
+				stageHeight / 2 + stageHeight * 0.1f);
 		
 		TextButton submitBtn = Assets.instance.uiElements.get9PatchButton("Submit Highscore");
-		submitBtn.setWidth(submitBtn.getWidth()*1.5f);
-		submitBtn.setX(stageWidth/2 - submitBtn.getWidth()/2);
-		submitBtn.setY(stageHeight/2 - stageHeight*0.05f);
-		
-		submitBtn.addListener(new ClickListener(){
+		submitBtn.setWidth(submitBtn.getWidth() * 1.5f);
+		submitBtn.setX(stageWidth / 2 - submitBtn.getWidth() / 2);
+		submitBtn.setY(stageHeight / 2 - stageHeight * 0.05f);
+		submitBtn.addListener(new ClickListener() {
 			@Override
-		    public void clicked(InputEvent event, float x, float y) {
+			public void clicked(InputEvent event, float x, float y) {
 				//submit highscore
+				submitHighScore();
 				Gdx.app.debug(TAG, "submitting highscore");
+			}
+
+			;
+		});
+
+		TextButton showHighscoreBtn = Assets.instance.uiElements.get9PatchButton("View Highscore");
+		showHighscoreBtn.setWidth(showHighscoreBtn.getWidth()*1.5f);
+		showHighscoreBtn.setX(stageWidth / 2 - submitBtn.getWidth() / 2);
+		showHighscoreBtn.setY(stageHeight / 2 - stageHeight * 0.05f - submitBtn.getHeight());
+		showHighscoreBtn.addListener(new ClickListener(){
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				game.showScore();
 			};
 		});
-		
+
+
 		//add all actors (ui elements)
 		stage.addActor(score);
 		stage.addActor(title);
 		stage.addActor(submitBtn);
+		stage.addActor(showHighscoreBtn);
+	}
+
+	private void submitHighScore(){
+		if(!this.highScoreSubmitted){
+			game.submitHighScore(this.highScore);
+			this.highScoreSubmitted = true;
+		}
 	}
 	
 	private void draw(SpriteBatch batch){
